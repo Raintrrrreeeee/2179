@@ -21,24 +21,8 @@
           "lookup": "properties.name",
           "from": {
             "data": {
-              "values": [
-                {"State": "Selangor", "Seller_Count": 2910},
-                {"State": "Kuala Lumpur", "Seller_Count": 1371},
-                {"State": "Johor", "Seller_Count": 768},
-                {"State": "Penang", "Seller_Count": 571},
-                {"State": "Perak", "Seller_Count": 517},
-                {"State": "Kedah", "Seller_Count": 286},
-                {"State": "Kelantan", "Seller_Count": 259},
-                {"State": "Negeri Sembilan", "Seller_Count": 236},
-                {"State": "Melaka", "Seller_Count": 210},
-                {"State": "Pahang", "Seller_Count": 185},
-                {"State": "Terengganu", "Seller_Count": 117},
-                {"State": "Sabah", "Seller_Count": 48},
-                {"State": "Sarawak", "Seller_Count": 38},
-                {"State": "Putrajaya", "Seller_Count": 14},
-                {"State": "Perlis", "Seller_Count": 37},
-                {"State": "Labuan", "Seller_Count": 0}
-              ]
+              "url": "https://raw.githubusercontent.com/Raintrrrreeeee/2179/DV2/FIT2179%20DV2/datasets/1.1.csv",
+              "format": {"type": "csv"}
             },
             "key": "State",
             "fields": ["Seller_Count"]

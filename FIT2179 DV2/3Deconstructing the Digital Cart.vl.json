@@ -1,0 +1,110 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 300,
+  "height": 230,
+  "title": {
+    "text": "Deconstructing the Digital Cart",
+    "subtitle": [
+      "Top Categories by Sales Volume (in Millions)",
+      "*sampled as of May 2023"
+    ],
+    "fontSize": 16,
+    "subtitleFontSize": 12,
+    "subtitleColor": "#7f8c8d",
+    "anchor": "start",
+    "offset": 10
+  },
+  "data": {
+    "values": [
+      {"Category": "Health & Beauty", "Sales": 4882631},
+      {"Category": "Home & Living", "Sales": 4219313},
+      {"Category": "Mobile & Accessories", "Sales": 3611451},
+      {"Category": "Men Clothes", "Sales": 3038874},
+      {"Category": "Baby & Toys", "Sales": 2514553},
+      {"Category": "Women Clothes", "Sales": 2310407},
+      {"Category": "Others", "Sales": 8851205}
+    ]
+  },
+  "transform": [{"calculate": "datum.Sales / 1000000", "as": "Sales_M"}],
+  "encoding": {
+    "y": {
+      "field": "Category",
+      "type": "nominal",
+      "sort": [
+        "Health & Beauty",
+        "Home & Living",
+        "Mobile & Accessories",
+        "Men Clothes",
+        "Baby & Toys",
+        "Women Clothes",
+        "Others"
+      ],
+      "axis": {
+        "title": null,
+        "grid": false,
+        "ticks": false,
+        "domain": false,
+        "labelFontSize": 11,
+        "labelFontWeight": "bold",
+        "labelColor": "#34495e"
+      }
+    },
+    "x": {"field": "Sales_M", "type": "quantitative", "axis": null}
+  },
+  "layer": [
+    {
+      "mark": {"type": "bar", "cornerRadiusEnd": 4, "height": {"band": 0.65}},
+      "encoding": {
+        "color": {
+          "condition": [
+            {
+              "test": "datum.Category === 'Health & Beauty'",
+              "value": "#d35400"
+            },
+            {"test": "datum.Category === 'Others'", "value": "#ecf0f1"}
+          ],
+          "value": "#f39c12"
+        }
+      }
+    },
+    {
+      "description": "Annotations",
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 5,
+        "fontSize": 12,
+        "fontWeight": "bold",
+        "fill": "#2c3e50"
+      },
+      "encoding": {
+        "text": {"field": "Sales_M", "type": "quantitative", "format": ".1f"}
+      }
+    },
+    {
+      "description": "Others",
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "dx": 0,
+        "dy": 14,
+        "fontSize": 10,
+        "fontStyle": "italic",
+        "fill": "#7f8c8d"
+      },
+      "encoding": {
+        "x": {"value": 0},
+        "text": {
+          "condition": {
+            "test": "datum.Category === 'Others'",
+            "value": "The 'Long Tail' (Pets, Groceries, Automotive, Books, etc.)"
+          },
+          "value": ""
+        }
+      }
+    }
+  ],
+  "config": {"view": {"stroke": "transparent"}}
+}

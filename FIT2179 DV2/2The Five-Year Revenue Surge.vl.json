@@ -1,0 +1,177 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 600,
+  "height": 250,
+  "title": {
+    "text": "The Five-Year Revenue Surge",
+    "subtitle": "Malaysia's Quarterly E-Commerce Income (2020-2024)",
+    "fontSize": 18,
+    "subtitleFontSize": 12
+  },
+  "data": {
+    "values": [
+      {
+        "Date": "2020-01-01",
+        "Year": 2020,
+        "Quarter": "Q1",
+        "Income_RM_Million": 201069.62
+      },
+      {
+        "Date": "2020-04-01",
+        "Year": 2020,
+        "Quarter": "Q2",
+        "Income_RM_Million": 222661.71
+      },
+      {
+        "Date": "2020-07-01",
+        "Year": 2020,
+        "Quarter": "Q3",
+        "Income_RM_Million": 244497.88
+      },
+      {
+        "Date": "2020-10-01",
+        "Year": 2020,
+        "Quarter": "Q4",
+        "Income_RM_Million": 251929.1
+      },
+      {
+        "Date": "2021-01-01",
+        "Year": 2021,
+        "Quarter": "Q1",
+        "Income_RM_Million": 248395.35
+      },
+      {
+        "Date": "2021-04-01",
+        "Year": 2021,
+        "Quarter": "Q2",
+        "Income_RM_Million": 261001.71
+      },
+      {
+        "Date": "2021-07-01",
+        "Year": 2021,
+        "Quarter": "Q3",
+        "Income_RM_Million": 272156.38
+      },
+      {
+        "Date": "2021-10-01",
+        "Year": 2021,
+        "Quarter": "Q4",
+        "Income_RM_Million": 283168.36
+      },
+      {
+        "Date": "2022-01-01",
+        "Year": 2022,
+        "Quarter": "Q1",
+        "Income_RM_Million": 271275.29
+      },
+      {
+        "Date": "2022-04-01",
+        "Year": 2022,
+        "Quarter": "Q2",
+        "Income_RM_Million": 281041.2
+      },
+      {
+        "Date": "2022-07-01",
+        "Year": 2022,
+        "Quarter": "Q3",
+        "Income_RM_Million": 281884.32
+      },
+      {
+        "Date": "2022-10-01",
+        "Year": 2022,
+        "Quarter": "Q4",
+        "Income_RM_Million": 294674.75
+      },
+      {
+        "Date": "2023-01-01",
+        "Year": 2023,
+        "Quarter": "Q1",
+        "Income_RM_Million": 299416.65
+      },
+      {
+        "Date": "2023-04-01",
+        "Year": 2023,
+        "Quarter": "Q2",
+        "Income_RM_Million": 287943.84
+      },
+      {
+        "Date": "2023-07-01",
+        "Year": 2023,
+        "Quarter": "Q3",
+        "Income_RM_Million": 297131.7
+      },
+      {
+        "Date": "2023-10-01",
+        "Year": 2023,
+        "Quarter": "Q4",
+        "Income_RM_Million": 299629.33
+      },
+      {
+        "Date": "2024-01-01",
+        "Year": 2024,
+        "Quarter": "Q1",
+        "Income_RM_Million": 301022.9
+      },
+      {
+        "Date": "2024-04-01",
+        "Year": 2024,
+        "Quarter": "Q2",
+        "Income_RM_Million": 310390.48
+      },
+      {
+        "Date": "2024-07-01",
+        "Year": 2024,
+        "Quarter": "Q3",
+        "Income_RM_Million": 308456.19
+      },
+      {
+        "Date": "2024-10-01",
+        "Year": 2024,
+        "Quarter": "Q4",
+        "Income_RM_Million": 310773.88
+      }
+    ]
+  },
+  "mark": {
+    "type": "line",
+    "point": {
+      "filled": true,
+      "fill": "white",
+      "stroke": "#d35400",
+      "strokeWidth": 2,
+      "size": 60
+    },
+    "color": "#d35400",
+    "strokeWidth": 3
+  },
+  "encoding": {
+    "x": {
+      "field": "Date",
+      "type": "temporal",
+      "axis": {
+        "title": "Timeline (Quarterly)",
+        "format": "%Y Q%q",
+        "labelAngle": -45,
+        "tickCount": 20,
+        "grid": false
+      }
+    },
+    "y": {
+      "field": "Income_RM_Million",
+      "type": "quantitative",
+      "scale": {"zero": false},
+      "axis": {"title": "Income (RM Million)", "gridColor": "#ecf0f1"}
+    },
+    "tooltip": [
+      {"field": "Year", "type": "ordinal"},
+      {"field": "Quarter", "type": "nominal"},
+      {
+        "field": "Income_RM_Million",
+        "type": "quantitative",
+        "title": "Income (RM Mil)",
+        "format": ",.0f"
+      }
+    ]
+  },
+  "config": {"view": {"stroke": "transparent"}}
+}

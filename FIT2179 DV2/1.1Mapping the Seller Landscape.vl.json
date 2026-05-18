@@ -1,0 +1,69 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 750,
+  "height": 400,
+  "title": {
+    "text": "Mapping the Seller Landscape",
+    "subtitle": "E-commerce Merchant Concentration across Malaysian States",
+    "fontSize": 18,
+    "subtitleFontSize": 12
+  },
+  "projection": {"type": "mercator"},
+  "layer": [
+    {
+      "description": "Layer 1",
+      "data": {
+        "url": "https://raw.githubusercontent.com/mptwaktusolat/jakim.geojson/master/malaysia.state.geojson",
+        "format": {"type": "json", "property": "features"}
+      },
+      "transform": [
+        {
+          "lookup": "properties.name",
+          "from": {
+            "data": {
+              "values": [
+                {"State": "Selangor", "Seller_Count": 2910},
+                {"State": "Kuala Lumpur", "Seller_Count": 1371},
+                {"State": "Johor", "Seller_Count": 768},
+                {"State": "Penang", "Seller_Count": 571},
+                {"State": "Perak", "Seller_Count": 517},
+                {"State": "Kedah", "Seller_Count": 286},
+                {"State": "Kelantan", "Seller_Count": 259},
+                {"State": "Negeri Sembilan", "Seller_Count": 236},
+                {"State": "Melaka", "Seller_Count": 210},
+                {"State": "Pahang", "Seller_Count": 185},
+                {"State": "Terengganu", "Seller_Count": 117},
+                {"State": "Sabah", "Seller_Count": 48},
+                {"State": "Sarawak", "Seller_Count": 38},
+                {"State": "Putrajaya", "Seller_Count": 14},
+                {"State": "Perlis", "Seller_Count": 37},
+                {"State": "Labuan", "Seller_Count": 0}
+              ]
+            },
+            "key": "State",
+            "fields": ["Seller_Count"]
+          }
+        }
+      ],
+      "mark": {"type": "geoshape", "stroke": "#ffffff", "strokeWidth": 1},
+      "encoding": {
+        "color": {
+          "field": "Seller_Count",
+          "type": "quantitative",
+          "scale": {"type": "quantile", "scheme": "oranges"},
+          "title": "Active Merchants"
+        },
+        "tooltip": [
+          {"field": "properties.name", "type": "nominal", "title": "State"},
+          {
+            "field": "Seller_Count",
+            "type": "quantitative",
+            "title": "Shopee Sellers",
+            "format": ","
+          }
+        ]
+      }
+    }
+  ],
+  "config": {"view": {"stroke": "transparent"}}
+}

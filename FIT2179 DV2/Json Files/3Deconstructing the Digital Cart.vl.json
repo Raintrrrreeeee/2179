@@ -14,16 +14,10 @@
     "anchor": "start",
     "offset": 10
   },
+  },
   "data": {
-    "values": [
-      {"Category": "Health & Beauty", "Sales": 4882631},
-      {"Category": "Home & Living", "Sales": 4219313},
-      {"Category": "Mobile & Accessories", "Sales": 3611451},
-      {"Category": "Men Clothes", "Sales": 3038874},
-      {"Category": "Baby & Toys", "Sales": 2514553},
-      {"Category": "Women Clothes", "Sales": 2310407},
-      {"Category": "Others", "Sales": 8851205}
-    ]
+    "url": "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/datasets/3.csv",
+    "format": {"type": "csv"}
   },
   "transform": [{"calculate": "datum.Sales / 1000000", "as": "Sales_M"}],
   "encoding": {

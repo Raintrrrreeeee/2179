@@ -14,7 +14,6 @@
     "anchor": "start",
     "offset": 10
   },
-  },
   "data": {
     "url": "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/datasets/3.csv",
     "format": {"type": "csv"}

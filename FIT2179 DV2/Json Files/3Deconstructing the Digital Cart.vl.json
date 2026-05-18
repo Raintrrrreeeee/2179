@@ -18,7 +18,9 @@
     "url": "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/datasets/3.csv",
     "format": {"type": "csv"}
   },
-  "transform": [{"calculate": "datum.Sales / 1000000", "as": "Sales_M"}],
+  "transform": [
+    {"calculate": "datum.Sales / 1000000", "as": "Sales_M"}
+  ],
   "encoding": {
     "y": {
       "field": "Category",
@@ -42,11 +44,19 @@
         "labelColor": "#34495e"
       }
     },
-    "x": {"field": "Sales_M", "type": "quantitative", "axis": null}
+    "x": {
+      "field": "Sales_M",
+      "type": "quantitative",
+      "axis": null
+    }
   },
   "layer": [
     {
-      "mark": {"type": "bar", "cornerRadiusEnd": 4, "height": {"band": 0.65}},
+      "mark": {
+        "type": "bar",
+        "cornerRadiusEnd": 4,
+        "height": {"band": 0.65}
+      },
       "encoding": {
         "color": {
           "condition": [
@@ -54,7 +64,10 @@
               "test": "datum.Category === 'Health & Beauty'",
               "value": "#d35400"
             },
-            {"test": "datum.Category === 'Others'", "value": "#ecf0f1"}
+            {
+              "test": "datum.Category === 'Others'",
+              "value": "#ecf0f1"
+            }
           ],
           "value": "#f39c12"
         }
@@ -72,7 +85,11 @@
         "fill": "#2c3e50"
       },
       "encoding": {
-        "text": {"field": "Sales_M", "type": "quantitative", "format": ".1f"}
+        "text": {
+          "field": "Sales_M",
+          "type": "quantitative",
+          "format": ".1f"
+        }
       }
     },
     {
@@ -88,16 +105,17 @@
         "fill": "#7f8c8d"
       },
       "encoding": {
-        "x": {"value": 0},
         "text": {
           "condition": {
             "test": "datum.Category === 'Others'",
-            "value": "The 'Long Tail' (Pets, Groceries, Automotive, Books, etc.)"
+            "value": "The 'Long Tail' (Pets, Groceries, etc.)"
           },
           "value": ""
         }
       }
     }
   ],
-  "config": {"view": {"stroke": "transparent"}}
+  "config": {
+    "view": {"stroke": "transparent"}
+  }
 }

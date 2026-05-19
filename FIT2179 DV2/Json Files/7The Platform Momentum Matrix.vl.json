@@ -1,0 +1,234 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 550,
+  "height": 380,
+  "title": {
+    "text": "The Platform Momentum Matrix",
+    "subtitle": [
+      "Platform Growth vs. Market Share in Malaysia (2024-2025)",
+      "*Bubble size = Total Sales. YoY GMV Growth = Annual sales growth."
+    ],
+    "fontSize": 18,
+    "subtitleFontSize": 12,
+    "subtitleColor": "#7f8c8d",
+    "anchor": "start",
+    "offset": 15
+  },
+  "data": {
+    "url": "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/datasets/7.csv",
+    "format": {"type": "csv"}
+  },
+  "layer": [
+    {
+      "description": "Quadrant Text: Top Left (Centered near intersection)",
+      "data": {
+        "values": [{"x": 32, "y": 54, "text": "Fast-Growing Challengers"}]
+      },
+      "mark": {
+        "type": "text",
+        "fontSize": 14,
+        "color": "#7f8c8d",
+        "fontWeight": "bold",
+        "align": "right",
+        "baseline": "bottom"
+      },
+      "encoding": {
+        "x": {"field": "x", "type": "quantitative"},
+        "y": {"field": "y", "type": "quantitative"},
+        "text": {"field": "text", "type": "nominal"}
+      }
+    },
+    {
+      "description": "Quadrant Text: Top Right (Centered near intersection)",
+      "data": {
+        "values": [{"x": 34, "y": 54, "text": ["High-Growth", " Leaders"]}]
+      },
+      "mark": {
+        "type": "text",
+        "fontSize": 14,
+        "color": "#7f8c8d",
+        "fontWeight": "bold",
+        "align": "left",
+        "baseline": "bottom"
+      },
+      "encoding": {
+        "x": {"field": "x", "type": "quantitative"},
+        "y": {"field": "y", "type": "quantitative"},
+        "text": {"field": "text", "type": "nominal"}
+      }
+    },
+    {
+      "description": "Quadrant Text: Bottom Right (Centered near intersection)",
+      "data": {
+        "values": [{"x": 34, "y": 41, "text": ["Slow-Growing", " Leaders"]}]
+      },
+      "mark": {
+        "type": "text",
+        "fontSize": 14,
+        "color": "#7f8c8d",
+        "fontWeight": "bold",
+        "align": "left",
+        "baseline": "top"
+      },
+      "encoding": {
+        "x": {"field": "x", "type": "quantitative"},
+        "y": {"field": "y", "type": "quantitative"},
+        "text": {"field": "text", "type": "nominal"}
+      }
+    },
+    {
+      "description": "Quadrant Text: Bottom Left (Centered near intersection)",
+      "data": {"values": [{"x": 32, "y": 41, "text": "At-Risk Players"}]},
+      "mark": {
+        "type": "text",
+        "fontSize": 14,
+        "color": "#7f8c8d",
+        "fontWeight": "bold",
+        "align": "right",
+        "baseline": "top"
+      },
+      "encoding": {
+        "x": {"field": "x", "type": "quantitative"},
+        "y": {"field": "y", "type": "quantitative"},
+        "text": {"field": "text", "type": "nominal"}
+      }
+    },
+    {
+      "description": "Market Average Growth Rule (Horizontal)",
+      "data": {"values": [{"y": 47.6}]},
+      "mark": {
+        "type": "rule",
+        "strokeDash": [4, 4],
+        "color": "#e74c3c",
+        "size": 1.5,
+        "opacity": 0.7
+      },
+      "encoding": {"y": {"field": "y", "type": "quantitative"}}
+    },
+    {
+      "description": "Label for Average Growth Rule (Moved to the far left to avoid collision)",
+      "data": {
+        "values": [{"x": 2, "y": 51, "text": "Market Average Growth (47.6%)"}]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "color": "#e74c3c",
+        "fontSize": 11,
+        "fontWeight": "bold",
+        "opacity": 0.9
+      },
+      "encoding": {
+        "x": {"field": "x", "type": "quantitative"},
+        "y": {"field": "y", "type": "quantitative"},
+        "text": {"field": "text", "type": "nominal"}
+      }
+    },
+    {
+      "description": "Market Average Share Rule (Vertical)",
+      "data": {"values": [{"x": 33.3}]},
+      "mark": {
+        "type": "rule",
+        "strokeDash": [4, 4],
+        "color": "#e74c3c",
+        "size": 1.5,
+        "opacity": 0.7
+      },
+      "encoding": {"x": {"field": "x", "type": "quantitative"}}
+    },
+    {
+      "description": "Label for Vertical Balance Rule (Placed near the top)",
+      "data": {
+        "values": [{"x": 34, "y": -32, "text": "Equal Share Baseline (33.3%)"}]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "color": "#e74c3c",
+        "fontSize": 11,
+        "fontWeight": "bold",
+        "opacity": 0.9
+      },
+      "encoding": {
+        "x": {"field": "x", "type": "quantitative"},
+        "y": {"field": "y", "type": "quantitative"},
+        "text": {"field": "text", "type": "nominal"}
+      }
+    },
+    {
+      "description": "Main Bubbles (With enlarged scale, pow transformation, and no legend)",
+      "mark": {
+        "type": "circle",
+        "opacity": 0.85,
+        "stroke": "white",
+        "strokeWidth": 2
+      },
+      "encoding": {
+        "x": {
+          "field": "Market_Share_Pct",
+          "type": "quantitative",
+          "scale": {"domain": [0, 65]},
+          "axis": {
+            "title": "Market Share 2025 (%)",
+            "titleFontWeight": "bold",
+            "grid": false
+          }
+        },
+        "y": {
+          "field": "YoY_Growth_Pct",
+          "type": "quantitative",
+          "scale": {"domain": [-40, 140]},
+          "axis": {
+            "title": "YoY GMV Growth (%)",
+            "titleFontWeight": "bold",
+            "grid": false
+          }
+        },
+        "size": {
+          "field": "GMV_Billions",
+          "type": "quantitative",
+          "scale": {"type": "pow", "exponent": 1.5, "range": [1500, 18000]},
+          "legend": null
+        },
+        "color": {
+          "field": "Platform",
+          "type": "nominal",
+          "scale": {
+            "domain": ["Shopee", "TikTok Shop", "Lazada"],
+            "range": ["#ff5e00", "#000000", "#e1007a"]
+          },
+          "legend": null
+        },
+        "tooltip": [
+          {"field": "Platform", "type": "nominal"},
+          {
+            "field": "Market_Share_Pct",
+            "type": "quantitative",
+            "title": "Market Share (%)"
+          },
+          {
+            "field": "YoY_Growth_Pct",
+            "type": "quantitative",
+            "title": "YoY Growth (%)"
+          },
+          {
+            "field": "GMV_Billions",
+            "type": "quantitative",
+            "title": "Total GMV (US$ B)"
+          }
+        ]
+      }
+    },
+    {
+      "description": "Platform Text Labels Attached to Bubbles (Pushed up to clear large circles)",
+      "mark": {"type": "text", "dy": -70, "fontSize": 14, "fontWeight": "bold"},
+      "encoding": {
+        "x": {"field": "Market_Share_Pct", "type": "quantitative"},
+        "y": {"field": "YoY_Growth_Pct", "type": "quantitative"},
+        "text": {"field": "Platform", "type": "nominal"},
+        "color": {"field": "Platform", "type": "nominal"}
+      }
+    }
+  ],
+  "config": {"view": {"stroke": "transparent"}}
+}

@@ -1,0 +1,93 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 600,
+  "height": 280,
+  "title": {
+    "text": "The Shifting Tides of Traffic",
+    "subtitle": [
+      "Top 3 Platforms *GMV in Southeast Asia (2020-2025, in US$ Billions)",
+      "*Gross Merchandise Volume"
+    ],
+    "fontSize": 18,
+    "subtitleFontSize": 12,
+    "subtitleColor": "#7f8c8d",
+    "anchor": "start",
+    "offset": 15
+  },
+  "data": {
+    "url": "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/datasets/4.csv",
+    "format": {"type": "csv"}
+  },
+  "layer": [
+    {
+      "description": "Core Streamgraph with height-sensitive tooltips and X-axis hover capturing",
+      "params": [
+        {
+          "name": "grid_hover",
+          "select": {
+            "type": "point",
+            "encodings": ["x"],
+            "on": "pointermove",
+            "nearest": true,
+            "clear": "pointerout"
+          }
+        }
+      ],
+      "mark": {
+        "type": "area",
+        "interpolate": "monotone",
+        "line": {"color": "#ffffff", "size": 0.8}
+      },
+      "encoding": {
+        "x": {
+          "field": "Date",
+          "type": "temporal",
+          "axis": {
+            "title": null,
+            "format": "%Y",
+            "tickCount": {"interval": "year", "step": 1},
+            "grid": false,
+            "domain": false,
+            "ticks": false
+          }
+        },
+        "y": {
+          "field": "GMV_Billions",
+          "type": "quantitative",
+          "stack": "center",
+          "axis": null
+        },
+        "color": {
+          "field": "Platform",
+          "type": "nominal",
+          "scale": {
+            "domain": ["Shopee", "TikTok Shop", "Lazada"],
+            "range": ["#ff5e00", "#000000", "#e1007a"]
+          },
+          "legend": {
+            "title": null,
+            "orient": "top",
+            "direction": "horizontal",
+            "labelFontSize": 12
+          }
+        },
+        "tooltip": [
+          {
+            "field": "Date",
+            "type": "temporal",
+            "format": "%Y",
+            "title": "Year"
+          },
+          {"field": "Platform", "type": "nominal"},
+          {
+            "field": "GMV_Billions",
+            "type": "quantitative",
+            "title": "GMV (US$ Billions)",
+            "format": ".1f"
+          }
+        ]
+      }
+    }
+  ],
+  "config": {"view": {"stroke": "transparent"}}
+}

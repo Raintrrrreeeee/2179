@@ -1,13 +1,13 @@
-Category,Platform,Share_Percent
-Fashion & Apparel,TikTok Shop,55
-Fashion & Apparel,Shopee,35
-Fashion & Apparel,Lazada,10
-Health & Beauty,TikTok Shop,50
-Health & Beauty,Shopee,40
-Health & Beauty,Lazada,10
-Electronics,Lazada,45
-Electronics,Shopee,40
-Electronics,TikTok Shop,15
-Groceries & FMCG,Shopee,65
-Groceries & FMCG,Lazada,25
-Groceries & FMCG,TikTok Shop,10
+Driver,Platform,Score
+Price & Deals,Shopee,88
+Price & Deals,TikTok Shop,75
+Price & Deals,Lazada,65
+Trust & Authenticity,Lazada,85
+Trust & Authenticity,Shopee,60
+Trust & Authenticity,TikTok Shop,35
+Entertainment & Discovery,TikTok Shop,92
+Entertainment & Discovery,Shopee,45
+Entertainment & Discovery,Lazada,25
+Product Variety,Shopee,90
+Product Variety,Lazada,70
+Product Variety,TikTok Shop,45

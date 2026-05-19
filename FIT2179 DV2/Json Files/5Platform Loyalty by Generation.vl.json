@@ -1,0 +1,109 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 500,
+  "height": 250,
+  "title": {
+    "text": "Platform Loyalty by Generation",
+    "subtitle": "Estimated E-commerce Penetration Rate (%) by Age Cohort",
+    "fontSize": 18,
+    "subtitleFontSize": 12,
+    "subtitleColor": "#7f8c8d",
+    "anchor": "start",
+    "offset": 15
+  },
+  "data": {
+    "url": "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/datasets/5.csv",
+    "format": {"type": "csv"}
+  },
+  "transform": [
+    {
+      "calculate": "datum.Generation === 'Gen Z' ? '1997-2012' : datum.Generation === 'Millennials' ? '1981-1996' : datum.Generation === 'Gen X' ? '1965-1980' : '1946-1964'",
+      "as": "Birth_Years"
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "Generation",
+      "type": "nominal",
+      "sort": ["Gen Z", "Millennials", "Gen X", "Boomers"],
+      "axis": {"title": null, "labels": false, "domain": false, "ticks": false}
+    },
+    "y": {
+      "field": "Platform",
+      "type": "nominal",
+      "sort": ["Shopee", "TikTok Shop", "Lazada"],
+      "axis": {
+        "title": null,
+        "labelFontSize": 13,
+        "labelFontWeight": "bold",
+        "domain": false,
+        "ticks": false
+      }
+    }
+  },
+  "layer": [
+    {
+      "description": "Academically standard heatmap using a single quantitative color scale",
+      "mark": {"type": "rect", "cornerRadius": 4},
+      "encoding": {
+        "color": {
+          "field": "Penetration",
+          "type": "quantitative",
+          "scale": {"scheme": "blues", "domain": [0, 100]},
+          "legend": {"title": "Penetration (%)", "orient": "right"}
+        },
+        "tooltip": [
+          {"field": "Generation", "type": "nominal", "title": "Generation"},
+          {"field": "Platform", "type": "nominal", "title": "Platform"},
+          {
+            "field": "Penetration",
+            "type": "quantitative",
+            "title": "Penetration (%)"
+          }
+        ]
+      }
+    },
+    {
+      "description": "Text labels for exact percentages, with contrast color condition",
+      "mark": {"type": "text", "fontSize": 14, "fontWeight": "bold"},
+      "encoding": {
+        "text": {
+          "field": "Penetration",
+          "type": "quantitative",
+          "format": ".0f"
+        },
+        "color": {
+          "condition": {"test": "datum.Penetration > 50", "value": "white"},
+          "value": "#2c3e50"
+        }
+      }
+    },
+    {
+      "description": "Custom X-axis labels: Nicknames (Large Bold)",
+      "transform": [{"filter": "datum.Platform === 'Lazada'"}],
+      "mark": {
+        "type": "text",
+        "baseline": "top",
+        "dy": 54,
+        "fontSize": 13,
+        "fontWeight": "bold",
+        "fill": "#34495e"
+      },
+      "encoding": {"text": {"field": "Generation", "type": "nominal"}}
+    },
+    {
+      "description": "Custom X-axis labels: Birth Years (Small Light Text)",
+      "transform": [{"filter": "datum.Platform === 'Lazada'"}],
+      "mark": {
+        "type": "text",
+        "baseline": "top",
+        "dy": 72,
+        "fontSize": 10,
+        "fontWeight": "normal",
+        "fill": "#7f8c8d"
+      },
+      "encoding": {"text": {"field": "Birth_Years", "type": "nominal"}}
+    }
+  ],
+  "config": {"view": {"stroke": "transparent"}, "axis": {"grid": false}}
+}

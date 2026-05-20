@@ -10,7 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
 
     <style>
-        /* 全局优雅排版设定 */
+        /* ================= 全局排版 ================= */
         body {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             background-color: #f4f7f6;
@@ -20,7 +20,6 @@
             padding: 40px 0;
         }
 
-        /* 1. 稍微放宽：1250px 大屏笔记本黄金宽度 */
         .poster-container {
             max-width: 1250px; 
             margin: 0 auto;
@@ -62,92 +61,95 @@
             font-style: italic;
         }
 
-        /* ========================================================= */
-        /* 核心防挤压黑科技：强制 Canvas 按比例缩放，绝不撑破容器 */
-        /* ========================================================= */
+        /* ================= 核心黑科技：强制画布约束 ================= */
+        /* 剥夺 Vega 画布的尺寸决定权，完全服从外层 HTML 容器 */
         .vega-embed {
+            width: 100%;
+            height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 100%;
-            height: 100%;
         }
         .vega-embed canvas, .vega-embed svg {
             max-width: 100% !important;
             max-height: 100% !important;
-            object-fit: contain !important; /* 强制等比包含 */
+            object-fit: contain !important; /* 像图片一样等比包含，绝不挤压变形 */
         }
 
-        /* ================= ZONE 1: 左右网格布局 ================= */
+        /* ================= ZONE 1: 高度锁定的网格 ================= */
         .zone1-grid {
             display: grid;
-            grid-template-columns: 1.3fr 1fr; /* 左侧地图权重加大 */
+            grid-template-columns: 1.3fr 1fr;
             gap: 30px; 
             margin-bottom: 40px;
-            align-items: stretch;
+            height: 750px; /* 【关键】强制设定总高度，防止内容互相挤压 */
         }
 
+        /* 左侧：图一 */
         .zone1-left {
+            width: 100%;
+            height: 100%;
             display: flex;
             flex-direction: column;
-            width: 100%;
         }
         
-        /* 增加图一高度，给予图二图三充足的生存空间 */
         .map-relative-wrapper {
             position: relative;
             width: 100%;
-            min-height: 680px; /* 高度拉大 */
+            flex: 1; /* 撑满高度 */
             background: #fdfdfd;
             border: 1px solid #eee;
             border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
             padding: 15px;
             box-sizing: border-box;
         }
 
-        /* 解决 1.2 消失的核心：加了一层不受 Vega 影响的保护壳 */
+        /* 【关键】修复 1.2 悬浮：赋予强制的尺寸和顶级 z-index */
         .chart-inset {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 9999;
-            width: 45%; /* 控制中间饼图的尺寸 */
+            width: 48%; 
+            height: 48%; 
             background: rgba(255, 255, 255, 0.95);
             padding: 10px;
             border-radius: 8px;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
-        }
-
-        .zone1-right {
             display: flex;
-            flex-direction: column;
-            gap: 20px; 
-            height: 100%;
+            justify-content: center;
+            align-items: center;
         }
 
-        /* 解决图三消失的核心：加入 min-height: 0; */
-        .zone1-right .chart-wrapper {
-            flex: 1;
-            min-height: 0; /* 绝对平分，防止被内容撑爆 */
+        /* 右侧：图二与图三 */
+        .zone1-right {
+            display: grid;
+            grid-template-rows: 1fr 1fr; /* 【关键】绝对均分为上下两块，谁也挤不走谁 */
+            gap: 20px; 
+            height: 100%; /* 继承 750px 的总高度 */
+        }
+
+        .chart-wrapper {
+            width: 100%;
+            height: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             background: #fdfdfd;
             border: 1px solid #eee;
             border-radius: 8px;
-            padding: 15px;
+            padding: 10px;
             box-sizing: border-box;
             overflow: hidden;
         }
 
-        /* ================= ZONE 2: 顶部整行 + 底部三分区 ================= */
+        /* ================= ZONE 2: 顶部满行 + 底部三等分 ================= */
+        
+        /* 图四：占满整宽，但限制最大高度 */
         .chart-full-row {
             width: 100%;
+            height: 450px; /* 【关键】图四高度天花板，防止变巨无霸 */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -159,24 +161,25 @@
             box-sizing: border-box;
         }
 
-        /* 图四“限宽锁”：限制宽度以压缩高度 */
         #vis4 {
             width: 100%;
-            max-width: 800px; /* 宽度被限制后，高度自然缩小 */
-            margin: 0 auto;
+            height: 100%;
         }
 
+        /* 图五、六、七 */
         .zone2-three-cols {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
+            height: 380px; /* 统一限定三分区的高度 */
         }
 
         .zone2-col {
+            width: 100%;
+            height: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
             background: #fdfdfd;
             border: 1px solid #eee;
             border-radius: 8px;

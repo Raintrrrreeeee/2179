@@ -10,7 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
 
     <style>
-        /* ================= 全局排版 ================= */
+        /* ================= 全局排版设定 ================= */
         body {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             background-color: #f4f7f6;
@@ -20,28 +20,29 @@
             padding: 40px 0;
         }
 
+        /* 笔记本舒适宽度：1200px 绝无左右滚动条 */
         .poster-container {
-            max-width: 1400px; /* 拓宽到真正的全景大屏尺寸，确保图四满宽极其震撼 */
+            max-width: 1200px; 
             margin: 0 auto;
             background-color: #ffffff;
-            padding: 50px 60px;
+            padding: 40px 50px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             border-radius: 12px;
         }
 
         h1 {
-            font-size: 2.6em;
+            font-size: 2.5em;
             text-align: center;
             margin-bottom: 10px;
             color: #2c3e50;
         }
 
         h2.zone-title {
-            font-size: 1.6em;
+            font-size: 1.5em;
             color: #e74c3c;
             border-bottom: 2px solid #ecf0f1;
             padding-bottom: 8px;
-            margin-top: 50px;
+            margin-top: 40px;
             margin-bottom: 25px;
         }
 
@@ -49,42 +50,47 @@
             font-size: 1.05em;
             color: #555;
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
-        /* 统一文字高度锁：防止文字长短不一导致图表高低乱掉 */
+        /* 注释固定高度，防止底部三张图因为字数不同而高低错乱 */
         .short-caption {
-            font-size: 0.9em;
+            font-size: 0.88em;
             color: #7f8c8d;
             text-align: center;
-            margin-top: 15px;
+            margin-top: 10px;
             line-height: 1.4;
             font-style: italic;
-            height: 40px; /* 强制锁定注释高度 */
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
+            height: 35px;
             overflow: hidden;
         }
 
-        /* 强制所有装图表的盒子填满剩余空间，不溢出 */
+        /* 基础图表容器：开启对内包含，防止图表撑破格子 */
         .vis-container {
             width: 100%;
-            flex: 1;
-            min-height: 0; 
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             overflow: hidden;
         }
 
-        /* ================= ZONE 1: 绝对切割的网格 ================= */
-        .zone1-grid {
-            display: grid;
-            grid-template-columns: 1.4fr 1fr; /* 左侧地图区域更宽一点 */
-            gap: 30px; 
-            margin-bottom: 40px;
-            height: 750px; /* 锁死整体高度，图二图三不再打架 */
+        /* 强行约束 Vega 生成的 SVG/Canvas 大小不溢出 */
+        .vis-container div, .vis-container canvas, .vis-container svg {
+            max-width: 100% !important;
+            max-height: 100% !important;
+            object-fit: contain !important;
         }
 
-        /* 左侧：图一 */
+        /* ================= ZONE 1: 左右对称网格 ================= */
+        .zone1-grid {
+            display: grid;
+            grid-template-columns: 1.3fr 1fr; /* 左侧地图略宽 */
+            gap: 25px; 
+            margin-bottom: 35px;
+            height: 620px; /* 锁死 Zone 1 整体高度 */
+        }
+
         .zone1-left {
             display: flex;
             flex-direction: column;
@@ -92,40 +98,38 @@
             height: 100%;
         }
         
+        /* 地图的相对定位包裹层 */
         .map-relative-wrapper {
             position: relative;
             width: 100%;
-            flex: 1; /* 占据除文字外所有高度 */
+            flex: 1;
             background: #fdfdfd;
             border: 1px solid #eee;
             border-radius: 8px;
-            padding: 10px;
-            box-sizing: border-box;
+            overflow: hidden;
         }
 
-        /* 图1.2保护壳：悬浮居中，设定严格比例 */
-        .chart-inset {
+        /* 悬浮饼图容器：用独立的白底阴影层强行置顶 */
+        .chart-inset-layer {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            z-index: 9999;
-            width: 38%; /* 控制悬浮饼图的宽度 */
-            height: 38%; /* 控制悬浮饼图的高度 */
-            background: rgba(255, 255, 255, 0.95);
-            padding: 10px;
+            z-index: 9999 !important; /* 顶级层级，绝不被遮挡 */
+            width: 260px; /* 锁定饼图外壳的物理像素宽度 */
+            height: 220px; /* 锁定饼图外壳的物理像素高度 */
+            background: rgba(255, 255, 255, 0.98);
+            padding: 12px;
             border-radius: 8px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
-            display: flex;
-            flex-direction: column;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+            border: 1px solid #e67e22; /* 淡淡的红边强化视觉层级 */
             box-sizing: border-box;
         }
 
-        /* 右侧：图二与图三 */
         .zone1-right {
             display: grid;
-            grid-template-rows: 1fr 1fr; /* 强行上下五五开劈开空间，图三得救 */
-            gap: 20px; 
+            grid-template-rows: 1fr 1fr; /* 严格五五开切割，彻底拯救图三 */
+            gap: 15px; 
             height: 100%;
         }
 
@@ -137,32 +141,33 @@
             background: #fdfdfd;
             border: 1px solid #eee;
             border-radius: 8px;
-            padding: 15px;
+            padding: 10px;
             box-sizing: border-box;
+            overflow: hidden;
         }
 
-        /* ================= ZONE 2: 顶部满宽 + 底部三等分 ================= */
+        /* ================= ZONE 2: 满宽图 + 三等分 ================= */
         
-        /* 图四：占满整宽，限定高度 */
+        /* 图四：真正的满宽整行，并且限制死高度，防止其无限放大 */
         .chart-full-row {
             width: 100%;
-            height: 420px; /* 控制图四高度，太高会显得空洞 */
+            height: 360px; 
             display: flex;
             flex-direction: column;
             background: #fdfdfd;
             border: 1px solid #eee;
             border-radius: 8px;
-            padding: 20px;
+            padding: 15px;
             margin-bottom: 30px;
             box-sizing: border-box;
         }
 
-        /* 图五、六、七并排 */
+        /* 下方三列：图五、六、七平分一整行 */
         .zone2-three-cols {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(3, 1fr); /* 严格三等分 */
             gap: 20px;
-            height: 400px; /* 锁死这三兄弟的高度，彻底治愈高低不平 */
+            height: 360px; /* 锁定这一行图表的总高度，治愈高低错乱 */
         }
 
         .zone2-col {
@@ -173,8 +178,9 @@
             background: #fdfdfd;
             border: 1px solid #eee;
             border-radius: 8px;
-            padding: 15px;
+            padding: 12px;
             box-sizing: border-box;
+            overflow: hidden;
         }
 
     </style>
@@ -194,7 +200,8 @@
             <div class="zone1-left">
                 <div class="map-relative-wrapper">
                     <div id="vis1_1" class="vis-container"></div>
-                    <div class="chart-inset">
+                    
+                    <div class="chart-inset-layer">
                         <div id="vis1_2" class="vis-container"></div>
                     </div>
                 </div>
@@ -240,18 +247,8 @@
     </div>
 
     <script>
-        // 【核心黑科技】: Vega 渲染拦截器
-        // 这一步会强行把你的 JSON 里的 width 和 height 删掉，改成 "container"
-        // 强迫 Vega 图表必须听从 HTML 盒子的指挥！
-        const opt = { 
-            actions: false,
-            patch: (spec) => {
-                spec.width = "container";
-                spec.height = "container";
-                spec.autosize = { type: "fit", contains: "padding" };
-                return spec;
-            }
-        };
+        // 回归最安全、不修改任何用户原件属性的默认配置
+        const opt = { actions: false };
 
         const url1_1 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/1.1Mapping%20the%20Seller%20Landscape.vl.json";
         vegaEmbed('#vis1_1', url1_1, opt).catch(console.error);

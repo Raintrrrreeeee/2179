@@ -72,6 +72,7 @@
             background: #fdfdfd;
             border: 1px solid #eee;
             border-radius: 8px;
+            overflow: hidden; /* 防止内容溢出 */
         }
 
         /* 悬浮在中间的图 1.2 */
@@ -151,24 +152,73 @@
     </div>
 
     <script>
-        // 注意：这里的 'xxx.vl.json' 需要与你 GitHub/本地实际生成的文件名严格一致
-        vegaEmbed('#vis1_1', '1.1Mapping the Seller Landscape.vl.json', {actions: false}).catch(console.error);
-        vegaEmbed('#vis1_2', '1.2Mapping the Seller Landscape.vl.json', {actions: false}).catch(console.error);
+        // ==========================================
+        // 直接读取 GitHub RAW 链接的方法 (图 1.1 已为你填好)
+        // ==========================================
+        const url1_1 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/1.1Mapping%20the%20Seller%20Landscape.vl.json";
         
-        vegaEmbed('#vis2', '2The Five-Year Revenue Surge.vl.json', {actions: false}).catch(console.error);
-        vegaEmbed('#vis3', '3Deconstructing the Digital Cart.vl.json', {actions: false}).catch(console.error);
-        
-        // 填入你 Zone 2 对应的图表文件名
-        vegaEmbed('#vis4', '4The Shifting Tides of Traffic.vl.json', {actions: false}).catch(console.error);
-        vegaEmbed('#vis5', '5Platform Loyalty by Generation.vl.json', {actions: false}).catch(console.error);
-        vegaEmbed('#vis6', '6The Battlegrounds of Consumer Minds.vl.json', {actions: false}).catch(console.error);
-        vegaEmbed('#vis7', '7The Platform Momentum Matrix.vl.json', {actions: false}).catch(console.error);
-        
-        // Zone 3 预留位 (等后续生成完 JSON 即可直接显示)
-        vegaEmbed('#vis8', '8Online Surge vs Physical Retail.vl.json', {actions: false}).catch(console.error);
-        vegaEmbed('#vis9', '9Navigating Consumer Pain Points.vl.json', {actions: false}).catch(console.error);
-        vegaEmbed('#vis10', '10Projecting the Retail Future.vl.json', {actions: false}).catch(console.error);
-    </script>
+        vegaEmbed('#vis1_1', url1_1, {actions: false}).catch(console.error);
 
+        // 示例：图 1.2
+        const spec1_2 = {
+            // 请把 1.2.vl.json 里的所有代码复制，替换掉这行注释及其上下大括号
+        };
+        vegaEmbed('#vis1_2', spec1_2, {actions: false}).catch(console.error);
+
+        // 示例：图 2
+        const spec2 = {
+            // 请把 2The Five-Year Revenue Surge.vl.json 里的所有代码复制进来
+        };
+        vegaEmbed('#vis2', spec2, {actions: false}).catch(console.error);
+
+        // 图 3
+        const spec3 = {
+             // 填入 JSON 代码...
+        };
+        vegaEmbed('#vis3', spec3, {actions: false}).catch(console.error);
+
+        // 图 4
+        const spec4 = {
+            // 填入 JSON 代码...
+        };
+        vegaEmbed('#vis4', spec4, {actions: false}).catch(console.error);
+
+        // 图 5
+        const spec5 = {
+            // 填入 JSON 代码...
+        };
+        vegaEmbed('#vis5', spec5, {actions: false}).catch(console.error);
+
+        // 图 6
+        const spec6 = {
+            // 填入 JSON 代码...
+        };
+        vegaEmbed('#vis6', spec6, {actions: false}).catch(console.error);
+
+        // 图 7
+        const spec7 = {
+            // 填入 JSON 代码...
+        };
+        vegaEmbed('#vis7', spec7, {actions: false}).catch(console.error);
+        
+        // 图 8
+        const spec8 = {
+            // 填入 JSON 代码...
+        };
+        vegaEmbed('#vis8', spec8, {actions: false}).catch(console.error);
+
+        // 图 9
+        const spec9 = {
+            // 填入 JSON 代码...
+        };
+        vegaEmbed('#vis9', spec9, {actions: false}).catch(console.error);
+
+        // 图 10
+        const spec10 = {
+            // 填入 JSON 代码...
+        };
+        vegaEmbed('#vis10', spec10, {actions: false}).catch(console.error);
+
+    </script>
 </body>
 </html>

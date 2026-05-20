@@ -20,18 +20,18 @@
             padding: 40px 0;
         }
 
-        /* 单列滑动居中主容器 */
+        /* 拓宽为全景超宽屏海报，容纳并排三图 */
         .poster-container {
-            max-width: 900px;
+            max-width: 1600px;
             margin: 0 auto;
             background-color: #ffffff;
             padding: 50px 70px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            border-radius: 8px;
+            border-radius: 12px;
         }
 
         h1 {
-            font-size: 2.5em;
+            font-size: 2.8em;
             text-align: center;
             margin-bottom: 10px;
             color: #2c3e50;
@@ -42,51 +42,119 @@
             color: #e74c3c;
             border-bottom: 2px solid #ecf0f1;
             padding-bottom: 10px;
-            margin-top: 50px;
+            margin-top: 60px;
+            margin-bottom: 30px;
         }
 
         p.description {
             font-size: 1.1em;
             color: #555;
-            margin-bottom: 30px;
             text-align: justify;
         }
 
-        /* 普通图表容器（居中对齐） */
-        .chart-container {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            margin: 30px 0;
+        /* 极简风的图片说明（不超过12个词预留） */
+        .short-caption {
+            font-size: 0.95em;
+            color: #7f8c8d;
+            text-align: center;
+            margin-top: 15px;
+            line-height: 1.4;
+            font-style: italic;
         }
 
-        /* ========== 图 1 的特殊嵌套布局 ========== */
-        .map-relative-wrapper {
-            position: relative; /* 确立父级相对定位 */
-            width: 100%;
-            min-height: 450px;
-            margin: 40px 0;
+        /* ================= ZONE 1: 左右网格布局 ================= */
+        .zone1-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr; /* 左边地图稍微宽一点，比例 1.2 : 1 */
+            gap: 40px; /* 左右留出明显空隙，不黏连 */
+            margin-bottom: 40px;
+            align-items: stretch;
+        }
+
+        /* 左侧：地图专属容器 */
+        .zone1-left {
             display: flex;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
+        }
+        
+        .map-relative-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%; /* 填满整个左侧高度 */
+            min-height: 550px;
             background: #fdfdfd;
             border: 1px solid #eee;
             border-radius: 8px;
-            overflow: hidden; /* 防止内容溢出 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
         }
 
-        /* 悬浮在中间的图 1.2 */
+        /* 图 1.2 悬浮在中间 */
         .chart-inset {
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%); /* 完美绝对居中 */
-            background: rgba(255, 255, 255, 0.95); /* 毛玻璃透明白底防止背景杂乱 */
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.92);
             padding: 15px;
             border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
             z-index: 10;
         }
+
+        /* 右侧：图二与图三平分上下空间 */
+        .zone1-right {
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* 图二和图三之间的间距 */
+        }
+
+        .zone1-right .chart-wrapper {
+            flex: 1; /* 强制平分高度 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #fdfdfd;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        /* ================= ZONE 2: 顶部整行 + 底部三分区 ================= */
+        .chart-full-row {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #fdfdfd;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 30px 20px;
+            margin-bottom: 40px;
+        }
+
+        /* 图五、六、七并排布局 */
+        .zone2-three-cols {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px; /* 三图之间坚决不黏连 */
+        }
+
+        .zone2-col {
+            flex: 1; /* 强制均分1/3的宽度 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            background: #fdfdfd;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
     </style>
 </head>
 <body>
@@ -94,117 +162,91 @@
     <div class="poster-container">
         
         <h1>E-commerce Battleground in Malaysia</h1>
-        
-        <p class="description">
-            Introduction text goes here. This section sets the stage for the data narrative, explaining the macro environment of Malaysia's e-commerce landscape before diving into the specific zones.
+        <p class="description" style="text-align: center; margin-bottom: 50px;">
+            An in-depth visual analysis of the macroeconomic landscape and fierce platform competition.
         </p>
 
         <h2 class="zone-title">ZONE I: MACRO LANDSCAPE</h2>
 
-        <div class="map-relative-wrapper">
-            <div id="vis1_1"></div>
-            <div id="vis1_2" class="chart-inset"></div>
+        <div class="zone1-grid">
+            <div class="zone1-left">
+                <div class="map-relative-wrapper">
+                    <div id="vis1_1"></div>
+                    <div id="vis1_2" class="chart-inset"></div>
+                </div>
+                <p class="short-caption">Geographical distribution of digital sellers alongside state-level economic insights.</p>
+            </div>
+
+            <div class="zone1-right">
+                <div class="chart-wrapper">
+                    <div id="vis2"></div>
+                    <p class="short-caption">Steady five-year revenue growth despite recent economic headwinds.</p>
+                </div>
+                <div class="chart-wrapper">
+                    <div id="vis3"></div>
+                    <p class="short-caption">Mega sales dependency causing seasonal traffic surges.</p>
+                </div>
+            </div>
         </div>
-
-        <p class="description">
-            Description for Figure 1. Explain the geographical distribution and what the inset chart reveals about the macro trends.
-        </p>
-
-        <div class="chart-container" id="vis2"></div>
-
-        <p class="description">
-            Description for Figure 2. Analyzing the five-year revenue surge and its implications.
-        </p>
-
-        <div class="chart-container" id="vis3"></div>
-
-        <p class="description">
-            Description for Figure 3. The gravity of mega sales and seasonal spikes.
-        </p>
-
 
         <h2 class="zone-title">ZONE II: THE CLASH OF TITANS</h2>
 
-        <div class="chart-container" id="vis4"></div>
-        <p class="description">Description for Figure 4.</p>
+        <div class="chart-full-row">
+            <div id="vis4"></div>
+            <p class="short-caption">The shifting tides of online traffic among major e-commerce platforms.</p>
+        </div>
 
-        <div class="chart-container" id="vis5"></div>
-        <p class="description">Description for Figure 5. Analyzing platform loyalty by generation using the heatmap.</p>
+        <div class="zone2-three-cols">
+            <div class="zone2-col">
+                <div id="vis5"></div>
+                <p class="short-caption">Gen Z leans toward TikTok, while Millennials stick to Shopee.</p>
+            </div>
+            
+            <div class="zone2-col">
+                <div id="vis6"></div>
+                <p class="short-caption">Shopee dominates prices, whereas Lazada wins on trust and authenticity.</p>
+            </div>
 
-        <div class="chart-container" id="vis6"></div>
-        <p class="description">Description for Figure 6. The battlegrounds of consumer minds and psychological drivers.</p>
-
-        <div class="chart-container" id="vis7"></div>
-        <p class="description">Description for Figure 7. The Platform Momentum Matrix detailing market share vs growth.</p>
+            <div class="zone2-col">
+                <div id="vis7"></div>
+                <p class="short-caption">TikTok's hyper-growth violently disrupts the established market share.</p>
+            </div>
+        </div>
 
 
         <h2 class="zone-title">ZONE III: REALITY & OFFLINE</h2>
-
-        <div class="chart-container" id="vis8"></div>
-        <p class="description">Description for Figure 8. Online Surge vs Physical Retail Recovery.</p>
-
-        <div class="chart-container" id="vis9"></div>
-        <p class="description">Description for Figure 9. Navigating Consumer Pain Points.</p>
-
-        <div class="chart-container" id="vis10"></div>
-        <p class="description">Description for Figure 10. Projecting the Retail Future.</p>
+        <p class="description">Charts 8, 9, and 10 will be populated here.</p>
 
     </div>
 
     <script>
-        // ==========================================
-        // 直接读取 GitHub RAW 链接的方法 (图 1.1 已为你填好)
-        // ==========================================
+        // ZONE 1
         const url1_1 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/1.1Mapping%20the%20Seller%20Landscape.vl.json";
-        
         vegaEmbed('#vis1_1', url1_1, {actions: false}).catch(console.error);
 
-        // 示例：图 1.2
-        const spec1_2 = https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/1.2Mapping%20the%20Seller%20Landscape.vl.json
-        vegaEmbed('#vis1_2', spec1_2, {actions: false}).catch(console.error);
+        // （请确保这几个 URL 是对的，如果有错可以换成你的内嵌 JSON 或正确的 RAW URL）
+        const url1_2 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/1.2Seller%20Density.vl.json";
+        vegaEmbed('#vis1_2', url1_2, {actions: false}).catch(console.error);
 
-        // 示例：图 2
-        const spec2 = https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/2The%20Five-Year%20Revenue%20Surge.vl.json
-        vegaEmbed('#vis2', spec2, {actions: false}).catch(console.error);
+        const url2 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/2The%20Five-Year%20Revenue%20Surge.vl.json";
+        vegaEmbed('#vis2', url2, {actions: false}).catch(console.error);
 
-        // 图 3
-        const spec3 = https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/3Deconstructing%20the%20Digital%20Cart.vl.json
-        vegaEmbed('#vis3', spec3, {actions: false}).catch(console.error);
+        const url3 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/3The%20Gravity%20of%20Mega%20Sales.vl.json";
+        vegaEmbed('#vis3', url3, {actions: false}).catch(console.error);
 
-        // 图 4
-        const spec4 = https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/4The%20Shifting%20Tides%20of%20Traffic.vl.json
-        vegaEmbed('#vis4', spec4, {actions: false}).catch(console.error);
+        // ZONE 2
+        const url4 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/4The%20Shifting%20Tides%20of%20Traffic.vl.json";
+        vegaEmbed('#vis4', url4, {actions: false}).catch(console.error);
 
-        // 图 5
-        const spec5 =https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/5Platform%20Loyalty%20by%20Generation.vl.json
-        vegaEmbed('#vis5', spec5, {actions: false}).catch(console.error);
+        const url5 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/5Platform%20Loyalty%20by%20Generation.vl.json";
+        vegaEmbed('#vis5', url5, {actions: false}).catch(console.error);
 
-        // 图 6
-        const spec6 = https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/6The%20Battlegrounds%20of%20Consumer%20Minds.vl.json
-        vegaEmbed('#vis6', spec6, {actions: false}).catch(console.error);
+        const url6 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/6The%20Battlegrounds%20of%20Consumer%20Minds.vl.json";
+        vegaEmbed('#vis6', url6, {actions: false}).catch(console.error);
 
-        // 图 7
-        const spec7 = https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/7The%20Platform%20Momentum%20Matrix.vl.json
-        vegaEmbed('#vis7', spec7, {actions: false}).catch(console.error);
-        
-        // 图 8
-        const spec8 = {
-            // 填入 JSON 代码...
-        };
-        vegaEmbed('#vis8', spec8, {actions: false}).catch(console.error);
-
-        // 图 9
-        const spec9 = {
-            // 填入 JSON 代码...
-        };
-        vegaEmbed('#vis9', spec9, {actions: false}).catch(console.error);
-
-        // 图 10
-        const spec10 = {
-            // 填入 JSON 代码...
-        };
-        vegaEmbed('#vis10', spec10, {actions: false}).catch(console.error);
-
+        const url7 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/7The%20Platform%20Momentum%20Matrix.vl.json";
+        vegaEmbed('#vis7', url7, {actions: false}).catch(console.error);
     </script>
+
 </body>
 </html>

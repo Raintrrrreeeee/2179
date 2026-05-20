@@ -10,7 +10,6 @@
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
 
     <style>
-        /* ================= 全局排版设定 ================= */
         body {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             background-color: #f4f7f6;
@@ -20,9 +19,9 @@
             padding: 40px 0;
         }
 
-        /* 笔记本舒适宽度：1200px 绝无左右滚动条 */
+        /* 海报主容器：宽度足够，不限制死高度，让图表自由呼吸 */
         .poster-container {
-            max-width: 1200px; 
+            max-width: 1300px; 
             margin: 0 auto;
             background-color: #ffffff;
             padding: 40px 50px;
@@ -30,157 +29,107 @@
             border-radius: 12px;
         }
 
-        h1 {
-            font-size: 2.5em;
-            text-align: center;
-            margin-bottom: 10px;
-            color: #2c3e50;
-        }
+        h1 { font-size: 2.5em; text-align: center; margin-bottom: 10px; color: #2c3e50; }
+        h2.zone-title { font-size: 1.5em; color: #e74c3c; border-bottom: 2px solid #ecf0f1; padding-bottom: 8px; margin-top: 40px; margin-bottom: 25px; }
+        p.description { font-size: 1.05em; color: #555; text-align: center; margin-bottom: 30px; }
 
-        h2.zone-title {
-            font-size: 1.5em;
-            color: #e74c3c;
-            border-bottom: 2px solid #ecf0f1;
-            padding-bottom: 8px;
-            margin-top: 40px;
-            margin-bottom: 25px;
-        }
-
-        p.description {
-            font-size: 1.05em;
-            color: #555;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        /* 注释固定高度，防止底部三张图因为字数不同而高低错乱 */
         .short-caption {
-            font-size: 0.88em;
-            color: #7f8c8d;
-            text-align: center;
-            margin-top: 10px;
-            line-height: 1.4;
-            font-style: italic;
-            height: 35px;
-            overflow: hidden;
+            font-size: 0.9em; color: #7f8c8d; text-align: center; margin-top: 15px; 
+            font-style: italic; min-height: 40px; /* 用 min-height 替代固定 height，绝不反向挤压图表 */
         }
 
-        /* 基础图表容器：开启对内包含，防止图表撑破格子 */
-        .vis-container {
-            width: 100%;
-            height: 100%;
+        /* 基础卡片样式：去掉了 overflow: hidden，绝不会再切掉你的坐标轴 */
+        .chart-box {
+            background: #fdfdfd;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 20px;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            overflow: hidden;
+            justify-content: flex-start; /* 顶部对齐，防止图表上下乱飘 */
+            box-sizing: border-box;
         }
 
-        /* 强行约束 Vega 生成的 SVG/Canvas 大小不溢出 */
-        .vis-container div, .vis-container canvas, .vis-container svg {
+        /* 【核心修复】：只针对画布本身做缩小，绝不碰外面的 div，防止图表引擎崩溃 */
+        .vega-embed canvas {
             max-width: 100% !important;
-            max-height: 100% !important;
-            object-fit: contain !important;
+            height: auto !important;
         }
 
-        /* ================= ZONE 1: 左右对称网格 ================= */
-        .zone1-grid {
-            display: grid;
-            grid-template-columns: 1.3fr 1fr; /* 左侧地图略宽 */
-            gap: 25px; 
-            margin-bottom: 35px;
-            height: 620px; /* 锁死 Zone 1 整体高度 */
+        /* ================= ZONE 1 布局 ================= */
+        .zone1-container {
+            display: flex; /* 改用最稳妥的 Flex 左右布局 */
+            gap: 30px;
+            margin-bottom: 40px;
+            align-items: stretch;
         }
 
+        /* 左侧地图：占 60% 宽度 */
         .zone1-left {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            height: 100%;
-        }
-        
-        /* 地图的相对定位包裹层 */
-        .map-relative-wrapper {
-            position: relative;
-            width: 100%;
-            flex: 1;
-            background: #fdfdfd;
-            border: 1px solid #eee;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        /* 悬浮饼图容器：用独立的白底阴影层强行置顶 */
-        .chart-inset-layer {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 9999 !important; /* 顶级层级，绝不被遮挡 */
-            width: 260px; /* 锁定饼图外壳的物理像素宽度 */
-            height: 220px; /* 锁定饼图外壳的物理像素高度 */
-            background: rgba(255, 255, 255, 0.98);
-            padding: 12px;
-            border-radius: 8px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
-            border: 1px solid #e67e22; /* 淡淡的红边强化视觉层级 */
-            box-sizing: border-box;
-        }
-
-        .zone1-right {
-            display: grid;
-            grid-template-rows: 1fr 1fr; /* 严格五五开切割，彻底拯救图三 */
-            gap: 15px; 
-            height: 100%;
-        }
-
-        .chart-wrapper {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            background: #fdfdfd;
-            border: 1px solid #eee;
-            border-radius: 8px;
-            padding: 10px;
-            box-sizing: border-box;
-            overflow: hidden;
-        }
-
-        /* ================= ZONE 2: 满宽图 + 三等分 ================= */
-        
-        /* 图四：真正的满宽整行，并且限制死高度，防止其无限放大 */
-        .chart-full-row {
-            width: 100%;
-            height: 360px; 
-            display: flex;
-            flex-direction: column;
+            width: 60%;
+            position: relative; /* 确立父级定位，拯救饼图 */
             background: #fdfdfd;
             border: 1px solid #eee;
             border-radius: 8px;
             padding: 15px;
-            margin-bottom: 30px;
-            box-sizing: border-box;
-        }
-
-        /* 下方三列：图五、六、七平分一整行 */
-        .zone2-three-cols {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 严格三等分 */
-            gap: 20px;
-            height: 360px; /* 锁定这一行图表的总高度，治愈高低错乱 */
-        }
-
-        .zone2-col {
-            width: 100%;
-            height: 100%;
             display: flex;
             flex-direction: column;
-            background: #fdfdfd;
-            border: 1px solid #eee;
+            justify-content: center;
+        }
+
+        /* 【彻底修复图 1.2 消失问题】：独立的外壳，最高层级，直接在中间定位 */
+        #vis1_2_wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px;
             border-radius: 8px;
-            padding: 12px;
-            box-sizing: border-box;
-            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            /* 设定一个不会太夸张的物理大小 */
+            width: 280px; 
+            display: flex;
+            justify-content: center;
+        }
+
+        /* 右侧图二图三：占 40% 宽度，上下自然排列 */
+        .zone1-right {
+            width: 40%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        /* 强制右侧的两个盒子平分空间，图三绝对会出现 */
+        .zone1-right .chart-box {
+            flex: 1; 
+            justify-content: center;
+        }
+
+
+        /* ================= ZONE 2 布局 ================= */
+        
+        /* 【彻底修复图四不占满的问题】：单独强制其画布宽度为 100% */
+        .zone2-full-row {
+            width: 100%;
+            margin-bottom: 30px;
+        }
+        #vis4 canvas {
+            width: 100% !important; /* 强制拉满整个父容器 */
+            height: auto !important;
+        }
+
+        /* 图五、六、七：三等分排列 */
+        .zone2-three-cols {
+            display: flex;
+            gap: 20px;
+            align-items: stretch; /* 保证三个盒子外部高度完全一致 */
+        }
+        .zone2-three-cols .chart-box {
+            width: 33.333%; /* 严格三等分 */
         }
 
     </style>
@@ -196,25 +145,23 @@
 
         <h2 class="zone-title">ZONE I: MACRO LANDSCAPE</h2>
 
-        <div class="zone1-grid">
+        <div class="zone1-container">
             <div class="zone1-left">
-                <div class="map-relative-wrapper">
-                    <div id="vis1_1" class="vis-container"></div>
-                    
-                    <div class="chart-inset-layer">
-                        <div id="vis1_2" class="vis-container"></div>
-                    </div>
+                <div id="vis1_1" style="width: 100%; display: flex; justify-content: center;"></div>
+                
+                <div id="vis1_2_wrapper">
+                    <div id="vis1_2"></div>
                 </div>
                 <p class="short-caption">Geographical distribution of digital sellers alongside state-level economic insights.</p>
             </div>
 
             <div class="zone1-right">
-                <div class="chart-wrapper">
-                    <div id="vis2" class="vis-container"></div>
+                <div class="chart-box">
+                    <div id="vis2"></div>
                     <p class="short-caption">Steady five-year revenue growth despite recent economic headwinds.</p>
                 </div>
-                <div class="chart-wrapper">
-                    <div id="vis3" class="vis-container"></div>
+                <div class="chart-box">
+                    <div id="vis3"></div>
                     <p class="short-caption">Mega sales dependency causing seasonal traffic surges.</p>
                 </div>
             </div>
@@ -222,24 +169,24 @@
 
         <h2 class="zone-title">ZONE II: THE CLASH OF TITANS</h2>
 
-        <div class="chart-full-row">
-            <div id="vis4" class="vis-container"></div>
+        <div class="chart-box zone2-full-row">
+            <div id="vis4"></div>
             <p class="short-caption">The shifting tides of online traffic among major e-commerce platforms.</p>
         </div>
 
         <div class="zone2-three-cols">
-            <div class="zone2-col">
-                <div id="vis5" class="vis-container"></div>
+            <div class="chart-box">
+                <div id="vis5"></div>
                 <p class="short-caption">Gen Z leans toward TikTok, while Millennials stick to Shopee.</p>
             </div>
             
-            <div class="zone2-col">
-                <div id="vis6" class="vis-container"></div>
+            <div class="chart-box">
+                <div id="vis6"></div>
                 <p class="short-caption">Shopee dominates prices, whereas Lazada wins on trust and authenticity.</p>
             </div>
 
-            <div class="zone2-col">
-                <div id="vis7" class="vis-container"></div>
+            <div class="chart-box">
+                <div id="vis7"></div>
                 <p class="short-caption">TikTok's hyper-growth violently disrupts the established market share.</p>
             </div>
         </div>
@@ -247,7 +194,6 @@
     </div>
 
     <script>
-        // 回归最安全、不修改任何用户原件属性的默认配置
         const opt = { actions: false };
 
         const url1_1 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/1.1Mapping%20the%20Seller%20Landscape.vl.json";

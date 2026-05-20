@@ -2,11 +2,173 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My first HTML Document</title>
+    <meta name="viewport" content="width=device-width, initial-width=1.0">
+    <title>FIT2179 Data Visualization Poster</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+    <style>
+        /* 全局优雅排版设定 */
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: #f4f7f6;
+            color: #2c3e50;
+            line-height: 1.7;
+            margin: 0;
+            padding: 40px 0;
+        }
+
+        /* 单列滑动居中主容器 */
+        .poster-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 50px 70px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border-radius: 8px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        h2.zone-title {
+            font-size: 1.8em;
+            color: #e74c3c;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 10px;
+            margin-top: 50px;
+        }
+
+        p.description {
+            font-size: 1.1em;
+            color: #555;
+            margin-bottom: 30px;
+            text-align: justify;
+        }
+
+        /* 普通图表容器（居中对齐） */
+        .chart-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+        }
+
+        /* ========== 图 1 的特殊嵌套布局 ========== */
+        .map-relative-wrapper {
+            position: relative; /* 确立父级相对定位 */
+            width: 100%;
+            min-height: 450px;
+            margin: 40px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #fdfdfd;
+            border: 1px solid #eee;
+            border-radius: 8px;
+        }
+
+        /* 悬浮在中间的图 1.2 */
+        .chart-inset {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* 完美绝对居中 */
+            background: rgba(255, 255, 255, 0.95); /* 毛玻璃透明白底防止背景杂乱 */
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+    </style>
 </head>
 <body>
-    <h1>Heading 1</h1>
-    <p>My first paragraph.</p>
+
+    <div class="poster-container">
+        
+        <h1>E-commerce Battleground in Malaysia</h1>
+        
+        <p class="description">
+            Introduction text goes here. This section sets the stage for the data narrative, explaining the macro environment of Malaysia's e-commerce landscape before diving into the specific zones.
+        </p>
+
+        <h2 class="zone-title">ZONE I: MACRO LANDSCAPE</h2>
+
+        <div class="map-relative-wrapper">
+            <div id="vis1_1"></div>
+            <div id="vis1_2" class="chart-inset"></div>
+        </div>
+
+        <p class="description">
+            Description for Figure 1. Explain the geographical distribution and what the inset chart reveals about the macro trends.
+        </p>
+
+        <div class="chart-container" id="vis2"></div>
+
+        <p class="description">
+            Description for Figure 2. Analyzing the five-year revenue surge and its implications.
+        </p>
+
+        <div class="chart-container" id="vis3"></div>
+
+        <p class="description">
+            Description for Figure 3. The gravity of mega sales and seasonal spikes.
+        </p>
+
+
+        <h2 class="zone-title">ZONE II: THE CLASH OF TITANS</h2>
+
+        <div class="chart-container" id="vis4"></div>
+        <p class="description">Description for Figure 4.</p>
+
+        <div class="chart-container" id="vis5"></div>
+        <p class="description">Description for Figure 5. Analyzing platform loyalty by generation using the heatmap.</p>
+
+        <div class="chart-container" id="vis6"></div>
+        <p class="description">Description for Figure 6. The battlegrounds of consumer minds and psychological drivers.</p>
+
+        <div class="chart-container" id="vis7"></div>
+        <p class="description">Description for Figure 7. The Platform Momentum Matrix detailing market share vs growth.</p>
+
+
+        <h2 class="zone-title">ZONE III: REALITY & OFFLINE</h2>
+
+        <div class="chart-container" id="vis8"></div>
+        <p class="description">Description for Figure 8. Online Surge vs Physical Retail Recovery.</p>
+
+        <div class="chart-container" id="vis9"></div>
+        <p class="description">Description for Figure 9. Navigating Consumer Pain Points.</p>
+
+        <div class="chart-container" id="vis10"></div>
+        <p class="description">Description for Figure 10. Projecting the Retail Future.</p>
+
+    </div>
+
+    <script>
+        // 注意：这里的 'xxx.vl.json' 需要与你 GitHub/本地实际生成的文件名严格一致
+        vegaEmbed('#vis1_1', '1.1Mapping the Seller Landscape.vl.json', {actions: false}).catch(console.error);
+        vegaEmbed('#vis1_2', '1.2Mapping the Seller Landscape.vl.json', {actions: false}).catch(console.error);
+        
+        vegaEmbed('#vis2', '2The Five-Year Revenue Surge.vl.json', {actions: false}).catch(console.error);
+        vegaEmbed('#vis3', '3Deconstructing the Digital Cart.vl.json', {actions: false}).catch(console.error);
+        
+        // 填入你 Zone 2 对应的图表文件名
+        vegaEmbed('#vis4', '4The Shifting Tides of Traffic.vl.json', {actions: false}).catch(console.error);
+        vegaEmbed('#vis5', '5Platform Loyalty by Generation.vl.json', {actions: false}).catch(console.error);
+        vegaEmbed('#vis6', '6The Battlegrounds of Consumer Minds.vl.json', {actions: false}).catch(console.error);
+        vegaEmbed('#vis7', '7The Platform Momentum Matrix.vl.json', {actions: false}).catch(console.error);
+        
+        // Zone 3 预留位 (等后续生成完 JSON 即可直接显示)
+        vegaEmbed('#vis8', '8Online Surge vs Physical Retail.vl.json', {actions: false}).catch(console.error);
+        vegaEmbed('#vis9', '9Navigating Consumer Pain Points.vl.json', {actions: false}).catch(console.error);
+        vegaEmbed('#vis10', '10Projecting the Retail Future.vl.json', {actions: false}).catch(console.error);
+    </script>
+
 </body>
 </html>

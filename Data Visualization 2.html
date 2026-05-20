@@ -20,9 +20,9 @@
             padding: 40px 0;
         }
 
-        /* 1. 笔记本舒适阅读宽度 (1100px，拒绝左右滑动) */
+        /* 1. 稍微放宽：1250px 大屏笔记本黄金宽度 */
         .poster-container {
-            max-width: 1100px; 
+            max-width: 1250px; 
             margin: 0 auto;
             background-color: #ffffff;
             padding: 50px 60px;
@@ -63,23 +63,25 @@
         }
 
         /* ========================================================= */
-        /* 核心黑科技：强制所有 Vega 图表自适应容器大小（等比缩小） */
+        /* 核心防挤压黑科技：强制 Canvas 按比例缩放，绝不撑破容器 */
         /* ========================================================= */
         .vega-embed {
-            width: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
+            width: 100%;
+            height: 100%;
         }
         .vega-embed canvas, .vega-embed svg {
-            width: 100% !important;
-            height: auto !important; /* 强制锁定比例缩放，防止变形 */
+            max-width: 100% !important;
+            max-height: 100% !important;
+            object-fit: contain !important; /* 强制等比包含 */
         }
 
         /* ================= ZONE 1: 左右网格布局 ================= */
         .zone1-grid {
             display: grid;
-            grid-template-columns: 1.2fr 1fr; /* 左边略宽 */
+            grid-template-columns: 1.3fr 1fr; /* 左侧地图权重加大 */
             gap: 30px; 
             margin-bottom: 40px;
             align-items: stretch;
@@ -91,38 +93,46 @@
             width: 100%;
         }
         
-        /* 强制确立相对定位的图 1 父容器 */
+        /* 增加图一高度，给予图二图三充足的生存空间 */
         .map-relative-wrapper {
             position: relative;
             width: 100%;
-            padding-bottom: 20px; /* 给下方留点白 */
+            min-height: 680px; /* 高度拉大 */
             background: #fdfdfd;
             border: 1px solid #eee;
             border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 15px;
+            box-sizing: border-box;
         }
 
-        /* 修复图 1.2 的悬浮问题：提升Z层级，并限制其最大宽度 */
-        #vis1_2 {
+        /* 解决 1.2 消失的核心：加了一层不受 Vega 影响的保护壳 */
+        .chart-inset {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            z-index: 9999; /* 强制悬浮在最顶层 */
-            width: 45%; /* 将饼图强制缩小到只占地图 45% 的宽度 */
+            z-index: 9999;
+            width: 45%; /* 控制中间饼图的尺寸 */
             background: rgba(255, 255, 255, 0.95);
             padding: 10px;
             border-radius: 8px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
         }
 
         .zone1-right {
             display: flex;
             flex-direction: column;
-            gap: 20px; /* 图二和图三均分上下空间 */
+            gap: 20px; 
+            height: 100%;
         }
 
+        /* 解决图三消失的核心：加入 min-height: 0; */
         .zone1-right .chart-wrapper {
             flex: 1;
+            min-height: 0; /* 绝对平分，防止被内容撑爆 */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -132,6 +142,7 @@
             border-radius: 8px;
             padding: 15px;
             box-sizing: border-box;
+            overflow: hidden;
         }
 
         /* ================= ZONE 2: 顶部整行 + 底部三分区 ================= */
@@ -148,10 +159,17 @@
             box-sizing: border-box;
         }
 
+        /* 图四“限宽锁”：限制宽度以压缩高度 */
+        #vis4 {
+            width: 100%;
+            max-width: 800px; /* 宽度被限制后，高度自然缩小 */
+            margin: 0 auto;
+        }
+
         .zone2-three-cols {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 完美的 CSS Grid 均分三列 */
-            gap: 20px; /* 三图坚决不黏连 */
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
         }
 
         .zone2-col {
@@ -164,6 +182,7 @@
             border-radius: 8px;
             padding: 15px;
             box-sizing: border-box;
+            overflow: hidden;
         }
 
     </style>
@@ -183,7 +202,9 @@
             <div class="zone1-left">
                 <div class="map-relative-wrapper">
                     <div id="vis1_1"></div>
-                    <div id="vis1_2"></div>
+                    <div class="chart-inset">
+                        <div id="vis1_2"></div>
+                    </div>
                 </div>
                 <p class="short-caption">Geographical distribution of digital sellers alongside state-level economic insights.</p>
             </div>
@@ -227,10 +248,8 @@
     </div>
 
     <script>
-        // 配置 Vega-Embed 选项，关闭右上角的动作菜单，让排版更干净
         const opt = { actions: false };
 
-        // 请确保这里的 URL 是你 Github 上对应图表的真实 Raw URL
         const url1_1 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/1.1Mapping%20the%20Seller%20Landscape.vl.json";
         vegaEmbed('#vis1_1', url1_1, opt).catch(console.error);
 

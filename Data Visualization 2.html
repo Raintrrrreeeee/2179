@@ -21,7 +21,7 @@
         }
 
         .poster-container {
-            max-width: 1250px; 
+            max-width: 1400px; /* 拓宽到真正的全景大屏尺寸，确保图四满宽极其震撼 */
             margin: 0 auto;
             background-color: #ffffff;
             padding: 50px 60px;
@@ -52,82 +52,81 @@
             margin-bottom: 40px;
         }
 
+        /* 统一文字高度锁：防止文字长短不一导致图表高低乱掉 */
         .short-caption {
             font-size: 0.9em;
             color: #7f8c8d;
             text-align: center;
-            margin-top: 12px;
+            margin-top: 15px;
             line-height: 1.4;
             font-style: italic;
-        }
-
-        /* ================= 核心黑科技：强制画布约束 ================= */
-        /* 剥夺 Vega 画布的尺寸决定权，完全服从外层 HTML 容器 */
-        .vega-embed {
-            width: 100%;
-            height: 100%;
+            height: 40px; /* 强制锁定注释高度 */
             display: flex;
+            align-items: flex-start;
             justify-content: center;
-            align-items: center;
-        }
-        .vega-embed canvas, .vega-embed svg {
-            max-width: 100% !important;
-            max-height: 100% !important;
-            object-fit: contain !important; /* 像图片一样等比包含，绝不挤压变形 */
+            overflow: hidden;
         }
 
-        /* ================= ZONE 1: 高度锁定的网格 ================= */
+        /* 强制所有装图表的盒子填满剩余空间，不溢出 */
+        .vis-container {
+            width: 100%;
+            flex: 1;
+            min-height: 0; 
+            overflow: hidden;
+        }
+
+        /* ================= ZONE 1: 绝对切割的网格 ================= */
         .zone1-grid {
             display: grid;
-            grid-template-columns: 1.3fr 1fr;
+            grid-template-columns: 1.4fr 1fr; /* 左侧地图区域更宽一点 */
             gap: 30px; 
             margin-bottom: 40px;
-            height: 750px; /* 【关键】强制设定总高度，防止内容互相挤压 */
+            height: 750px; /* 锁死整体高度，图二图三不再打架 */
         }
 
         /* 左侧：图一 */
         .zone1-left {
-            width: 100%;
-            height: 100%;
             display: flex;
             flex-direction: column;
+            width: 100%;
+            height: 100%;
         }
         
         .map-relative-wrapper {
             position: relative;
             width: 100%;
-            flex: 1; /* 撑满高度 */
+            flex: 1; /* 占据除文字外所有高度 */
             background: #fdfdfd;
             border: 1px solid #eee;
             border-radius: 8px;
-            padding: 15px;
+            padding: 10px;
             box-sizing: border-box;
         }
 
-        /* 【关键】修复 1.2 悬浮：赋予强制的尺寸和顶级 z-index */
+        /* 图1.2保护壳：悬浮居中，设定严格比例 */
         .chart-inset {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 9999;
-            width: 48%; 
-            height: 48%; 
+            width: 38%; /* 控制悬浮饼图的宽度 */
+            height: 38%; /* 控制悬浮饼图的高度 */
             background: rgba(255, 255, 255, 0.95);
             padding: 10px;
             border-radius: 8px;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
             display: flex;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
+            box-sizing: border-box;
         }
 
         /* 右侧：图二与图三 */
         .zone1-right {
             display: grid;
-            grid-template-rows: 1fr 1fr; /* 【关键】绝对均分为上下两块，谁也挤不走谁 */
+            grid-template-rows: 1fr 1fr; /* 强行上下五五开劈开空间，图三得救 */
             gap: 20px; 
-            height: 100%; /* 继承 750px 的总高度 */
+            height: 100%;
         }
 
         .chart-wrapper {
@@ -135,24 +134,21 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            align-items: center;
             background: #fdfdfd;
             border: 1px solid #eee;
             border-radius: 8px;
-            padding: 10px;
+            padding: 15px;
             box-sizing: border-box;
-            overflow: hidden;
         }
 
-        /* ================= ZONE 2: 顶部满行 + 底部三等分 ================= */
+        /* ================= ZONE 2: 顶部满宽 + 底部三等分 ================= */
         
-        /* 图四：占满整宽，但限制最大高度 */
+        /* 图四：占满整宽，限定高度 */
         .chart-full-row {
             width: 100%;
-            height: 450px; /* 【关键】图四高度天花板，防止变巨无霸 */
+            height: 420px; /* 控制图四高度，太高会显得空洞 */
             display: flex;
             flex-direction: column;
-            align-items: center;
             background: #fdfdfd;
             border: 1px solid #eee;
             border-radius: 8px;
@@ -161,17 +157,12 @@
             box-sizing: border-box;
         }
 
-        #vis4 {
-            width: 100%;
-            height: 100%;
-        }
-
-        /* 图五、六、七 */
+        /* 图五、六、七并排 */
         .zone2-three-cols {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
-            height: 380px; /* 统一限定三分区的高度 */
+            height: 400px; /* 锁死这三兄弟的高度，彻底治愈高低不平 */
         }
 
         .zone2-col {
@@ -179,13 +170,11 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            align-items: center;
             background: #fdfdfd;
             border: 1px solid #eee;
             border-radius: 8px;
             padding: 15px;
             box-sizing: border-box;
-            overflow: hidden;
         }
 
     </style>
@@ -204,9 +193,9 @@
         <div class="zone1-grid">
             <div class="zone1-left">
                 <div class="map-relative-wrapper">
-                    <div id="vis1_1"></div>
+                    <div id="vis1_1" class="vis-container"></div>
                     <div class="chart-inset">
-                        <div id="vis1_2"></div>
+                        <div id="vis1_2" class="vis-container"></div>
                     </div>
                 </div>
                 <p class="short-caption">Geographical distribution of digital sellers alongside state-level economic insights.</p>
@@ -214,11 +203,11 @@
 
             <div class="zone1-right">
                 <div class="chart-wrapper">
-                    <div id="vis2"></div>
+                    <div id="vis2" class="vis-container"></div>
                     <p class="short-caption">Steady five-year revenue growth despite recent economic headwinds.</p>
                 </div>
                 <div class="chart-wrapper">
-                    <div id="vis3"></div>
+                    <div id="vis3" class="vis-container"></div>
                     <p class="short-caption">Mega sales dependency causing seasonal traffic surges.</p>
                 </div>
             </div>
@@ -227,23 +216,23 @@
         <h2 class="zone-title">ZONE II: THE CLASH OF TITANS</h2>
 
         <div class="chart-full-row">
-            <div id="vis4"></div>
+            <div id="vis4" class="vis-container"></div>
             <p class="short-caption">The shifting tides of online traffic among major e-commerce platforms.</p>
         </div>
 
         <div class="zone2-three-cols">
             <div class="zone2-col">
-                <div id="vis5"></div>
+                <div id="vis5" class="vis-container"></div>
                 <p class="short-caption">Gen Z leans toward TikTok, while Millennials stick to Shopee.</p>
             </div>
             
             <div class="zone2-col">
-                <div id="vis6"></div>
+                <div id="vis6" class="vis-container"></div>
                 <p class="short-caption">Shopee dominates prices, whereas Lazada wins on trust and authenticity.</p>
             </div>
 
             <div class="zone2-col">
-                <div id="vis7"></div>
+                <div id="vis7" class="vis-container"></div>
                 <p class="short-caption">TikTok's hyper-growth violently disrupts the established market share.</p>
             </div>
         </div>
@@ -251,7 +240,18 @@
     </div>
 
     <script>
-        const opt = { actions: false };
+        // 【核心黑科技】: Vega 渲染拦截器
+        // 这一步会强行把你的 JSON 里的 width 和 height 删掉，改成 "container"
+        // 强迫 Vega 图表必须听从 HTML 盒子的指挥！
+        const opt = { 
+            actions: false,
+            patch: (spec) => {
+                spec.width = "container";
+                spec.height = "container";
+                spec.autosize = { type: "fit", contains: "padding" };
+                return spec;
+            }
+        };
 
         const url1_1 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/1.1Mapping%20the%20Seller%20Landscape.vl.json";
         vegaEmbed('#vis1_1', url1_1, opt).catch(console.error);

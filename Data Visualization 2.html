@@ -20,99 +20,109 @@
             padding: 40px 0;
         }
 
-        /* 拓宽为全景超宽屏海报，容纳并排三图 */
+        /* 1. 笔记本舒适阅读宽度 (1100px，拒绝左右滑动) */
         .poster-container {
-            max-width: 1600px;
+            max-width: 1100px; 
             margin: 0 auto;
             background-color: #ffffff;
-            padding: 50px 70px;
+            padding: 50px 60px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             border-radius: 12px;
         }
 
         h1 {
-            font-size: 2.8em;
+            font-size: 2.6em;
             text-align: center;
             margin-bottom: 10px;
             color: #2c3e50;
         }
 
         h2.zone-title {
-            font-size: 1.8em;
+            font-size: 1.6em;
             color: #e74c3c;
             border-bottom: 2px solid #ecf0f1;
-            padding-bottom: 10px;
-            margin-top: 60px;
-            margin-bottom: 30px;
+            padding-bottom: 8px;
+            margin-top: 50px;
+            margin-bottom: 25px;
         }
 
         p.description {
-            font-size: 1.1em;
+            font-size: 1.05em;
             color: #555;
-            text-align: justify;
+            text-align: center;
+            margin-bottom: 40px;
         }
 
-        /* 极简风的图片说明（不超过12个词预留） */
         .short-caption {
-            font-size: 0.95em;
+            font-size: 0.9em;
             color: #7f8c8d;
             text-align: center;
-            margin-top: 15px;
+            margin-top: 12px;
             line-height: 1.4;
             font-style: italic;
+        }
+
+        /* ========================================================= */
+        /* 核心黑科技：强制所有 Vega 图表自适应容器大小（等比缩小） */
+        /* ========================================================= */
+        .vega-embed {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .vega-embed canvas, .vega-embed svg {
+            width: 100% !important;
+            height: auto !important; /* 强制锁定比例缩放，防止变形 */
         }
 
         /* ================= ZONE 1: 左右网格布局 ================= */
         .zone1-grid {
             display: grid;
-            grid-template-columns: 1.2fr 1fr; /* 左边地图稍微宽一点，比例 1.2 : 1 */
-            gap: 40px; /* 左右留出明显空隙，不黏连 */
+            grid-template-columns: 1.2fr 1fr; /* 左边略宽 */
+            gap: 30px; 
             margin-bottom: 40px;
             align-items: stretch;
         }
 
-        /* 左侧：地图专属容器 */
         .zone1-left {
             display: flex;
             flex-direction: column;
+            width: 100%;
         }
         
+        /* 强制确立相对定位的图 1 父容器 */
         .map-relative-wrapper {
             position: relative;
             width: 100%;
-            height: 100%; /* 填满整个左侧高度 */
-            min-height: 550px;
+            padding-bottom: 20px; /* 给下方留点白 */
             background: #fdfdfd;
             border: 1px solid #eee;
             border-radius: 8px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
         }
 
-        /* 图 1.2 悬浮在中间 */
-        .chart-inset {
+        /* 修复图 1.2 的悬浮问题：提升Z层级，并限制其最大宽度 */
+        #vis1_2 {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(255, 255, 255, 0.92);
-            padding: 15px;
+            z-index: 9999; /* 强制悬浮在最顶层 */
+            width: 45%; /* 将饼图强制缩小到只占地图 45% 的宽度 */
+            background: rgba(255, 255, 255, 0.95);
+            padding: 10px;
             border-radius: 8px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-            z-index: 10;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
         }
 
-        /* 右侧：图二与图三平分上下空间 */
         .zone1-right {
             display: flex;
             flex-direction: column;
-            gap: 20px; /* 图二和图三之间的间距 */
+            gap: 20px; /* 图二和图三均分上下空间 */
         }
 
         .zone1-right .chart-wrapper {
-            flex: 1; /* 强制平分高度 */
+            flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -120,7 +130,8 @@
             background: #fdfdfd;
             border: 1px solid #eee;
             border-radius: 8px;
-            padding: 20px;
+            padding: 15px;
+            box-sizing: border-box;
         }
 
         /* ================= ZONE 2: 顶部整行 + 底部三分区 ================= */
@@ -132,19 +143,18 @@
             background: #fdfdfd;
             border: 1px solid #eee;
             border-radius: 8px;
-            padding: 30px 20px;
-            margin-bottom: 40px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-sizing: border-box;
         }
 
-        /* 图五、六、七并排布局 */
         .zone2-three-cols {
-            display: flex;
-            justify-content: space-between;
-            gap: 30px; /* 三图之间坚决不黏连 */
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 完美的 CSS Grid 均分三列 */
+            gap: 20px; /* 三图坚决不黏连 */
         }
 
         .zone2-col {
-            flex: 1; /* 强制均分1/3的宽度 */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -152,7 +162,8 @@
             background: #fdfdfd;
             border: 1px solid #eee;
             border-radius: 8px;
-            padding: 20px;
+            padding: 15px;
+            box-sizing: border-box;
         }
 
     </style>
@@ -162,7 +173,7 @@
     <div class="poster-container">
         
         <h1>E-commerce Battleground in Malaysia</h1>
-        <p class="description" style="text-align: center; margin-bottom: 50px;">
+        <p class="description">
             An in-depth visual analysis of the macroeconomic landscape and fierce platform competition.
         </p>
 
@@ -172,7 +183,7 @@
             <div class="zone1-left">
                 <div class="map-relative-wrapper">
                     <div id="vis1_1"></div>
-                    <div id="vis1_2" class="chart-inset"></div>
+                    <div id="vis1_2"></div>
                 </div>
                 <p class="short-caption">Geographical distribution of digital sellers alongside state-level economic insights.</p>
             </div>
@@ -213,40 +224,36 @@
             </div>
         </div>
 
-
-        <h2 class="zone-title">ZONE III: REALITY & OFFLINE</h2>
-        <p class="description">Charts 8, 9, and 10 will be populated here.</p>
-
     </div>
 
     <script>
-        // ZONE 1
-        const url1_1 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/1.1Mapping%20the%20Seller%20Landscape.vl.json";
-        vegaEmbed('#vis1_1', url1_1, {actions: false}).catch(console.error);
+        // 配置 Vega-Embed 选项，关闭右上角的动作菜单，让排版更干净
+        const opt = { actions: false };
 
-        // （请确保这几个 URL 是对的，如果有错可以换成你的内嵌 JSON 或正确的 RAW URL）
+        // 请确保这里的 URL 是你 Github 上对应图表的真实 Raw URL
+        const url1_1 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/1.1Mapping%20the%20Seller%20Landscape.vl.json";
+        vegaEmbed('#vis1_1', url1_1, opt).catch(console.error);
+
         const url1_2 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/1.2Seller%20Density.vl.json";
-        vegaEmbed('#vis1_2', url1_2, {actions: false}).catch(console.error);
+        vegaEmbed('#vis1_2', url1_2, opt).catch(console.error);
 
         const url2 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/2The%20Five-Year%20Revenue%20Surge.vl.json";
-        vegaEmbed('#vis2', url2, {actions: false}).catch(console.error);
+        vegaEmbed('#vis2', url2, opt).catch(console.error);
 
         const url3 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/3The%20Gravity%20of%20Mega%20Sales.vl.json";
-        vegaEmbed('#vis3', url3, {actions: false}).catch(console.error);
+        vegaEmbed('#vis3', url3, opt).catch(console.error);
 
-        // ZONE 2
         const url4 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/4The%20Shifting%20Tides%20of%20Traffic.vl.json";
-        vegaEmbed('#vis4', url4, {actions: false}).catch(console.error);
+        vegaEmbed('#vis4', url4, opt).catch(console.error);
 
         const url5 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/5Platform%20Loyalty%20by%20Generation.vl.json";
-        vegaEmbed('#vis5', url5, {actions: false}).catch(console.error);
+        vegaEmbed('#vis5', url5, opt).catch(console.error);
 
         const url6 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/6The%20Battlegrounds%20of%20Consumer%20Minds.vl.json";
-        vegaEmbed('#vis6', url6, {actions: false}).catch(console.error);
+        vegaEmbed('#vis6', url6, opt).catch(console.error);
 
         const url7 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/7The%20Platform%20Momentum%20Matrix.vl.json";
-        vegaEmbed('#vis7', url7, {actions: false}).catch(console.error);
+        vegaEmbed('#vis7', url7, opt).catch(console.error);
     </script>
-
 </body>
 </html>

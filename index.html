@@ -3,10 +3,248 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My first HTML Document</title>
+    <title>Swipe,Shop,Ship: The Momentum of Malaysia's E-Commerce</title>
+    
+    <!-- Import Vega & Vega-Lite Core Dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+    <style>
+        /* --- Core Visual Variables --- */
+        :root {
+            --bg-color: #f3f6f9;         
+            --card-bg: #ffffff;          
+            --text-main: #2d3748;        
+            --text-sub: #718096;         
+            --accent-color: #3182ce;     
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* --- Base Reset & Layout --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: var(--bg-color); color: var(--text-main); padding: 30px; }
+        .dashboard { max-width: 1600px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px; }
+
+        /* Main Dashboard Title */
+        .main-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            text-align: center;
+            color: var(--text-main);
+            margin-bottom: 10px;
+        }
+
+        /* --- Section Header Visual Hierarchy --- */
+        .section-header { margin-bottom: 15px; padding-left: 12px; border-left: 5px solid var(--accent-color); }
+        .section-header h2 { font-size: 1.4rem; font-weight: 600; letter-spacing: 0.5px; }
+        .section-header p { font-size: 0.9rem; color: var(--text-sub); margin-top: 4px; }
+
+        /* --- General Card Styles --- */
+        .card { 
+            background: var(--card-bg); 
+            border-radius: 12px; 
+            padding: 20px; 
+            box-shadow: var(--shadow);
+            transition: box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .card:hover { box-shadow: var(--shadow-hover); }
+        
+        /* --- Base Chart Containers --- */
+        .chart-container { 
+            flex-grow: 1; 
+            border-radius: 8px; 
+            width: 100%; 
+            height: 100%; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Force Vega-Lite Canvas/SVG to responsive fill */
+        .chart-container canvas, .chart-container svg {
+            width: 100% !important;
+            height: auto !important;
+        }
+
+        /* ================= Core Modification: Stacked Layout Container ================= */
+        .chart-container-stacked {
+            position: relative; /* Establish positioning context */
+            width: 100%;
+            flex-grow: 1;
+            min-height: 500px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .base-layer, .overlay-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Mouse passthrough: Ensure top density layer doesn't block bottom layer tooltips */
+        .overlay-layer {
+            pointer-events: none; 
+        }
+
+        /* Force top canvas background to be transparent */
+        .overlay-layer canvas, .overlay-layer svg {
+            background-color: transparent !important;
+        }
+        /* =============================================================================== */
+
+        /* --- Three Main Zones Grid Layout --- */
+        
+        /* Zone 1: (Left large combined card + right two small cards stacked vertically) */
+        .zone-1 { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+        .zone-1 .side-charts { display: flex; flex-direction: column; gap: 24px; }
+        .zone-1 .side-charts .chart-container { min-height: 213px; }
+
+        /* Zone 2: (2x2 equal grid) */
+        .zone-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+        .zone-2 .chart-container { min-height: 350px; }
+
+        /* Zone 3: (3 columns equal grid) */
+        .zone-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .zone-3 .chart-container { min-height: 320px; }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1200px) {
+            .zone-1, .zone-2, .zone-3 { grid-template-columns: 1fr; }
+            .zone-1 .side-charts { flex-direction: row; }
+        }
+    </style>
 </head>
 <body>
-    <h1>Heading 1</h1>
-    <p>My first paragraph.</p>
+
+<div class="dashboard">
+
+    <!-- Main Title -->
+    <h1 class="main-title">Swipe,Shop,Ship: The Momentum of Malaysia's E-Commerce</h1>
+
+    <!-- ================= Zone 1 ================= -->
+    <section>
+        <div class="section-header">
+            <h2>Zone 1: Macro Ecosystem & Revenue Perspectives</h2>
+            <p>Showcasing platform seller distribution, density, and long-term revenue scaling trends.</p>
+        </div>
+        <div class="zone-1">
+            <!-- Left Large Card: Layered Chart 1.1 and Chart 1.2 -->
+            <div class="card main-chart">
+                <div class="chart-container-stacked">
+                    <!-- Base layer chart 1.1 -->
+                    <div id="vis1_1" class="base-layer"></div>
+                    <!-- Overlay layer chart 1.2 -->
+                    <div id="vis1_2" class="overlay-layer"></div>
+                </div>
+            </div>
+            
+            <!-- Right Side: Two vertically stacked smaller cards -->
+            <div class="side-charts">
+                <div class="card">
+                    <div id="vis2" class="chart-container"></div>
+                </div>
+                <div class="card">
+                    <div id="vis3" class="chart-container"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= Zone 2 ================= -->
+    <section>
+        <div class="section-header">
+            <h2>Zone 2: Traffic Migration & Consumer Mindset Evolution</h2>
+            <p>Detailed breakdown of generational loyalty, traffic distribution, and comprehensive platform momentum.</p>
+        </div>
+        <div class="zone-2">
+            <div class="card">
+                <div id="vis4" class="chart-container"></div>
+            </div>
+            <div class="card">
+                <div id="vis5" class="chart-container"></div>
+            </div>
+            <div class="card">
+                <div id="vis6" class="chart-container"></div>
+            </div>
+            <div class="card">
+                <div id="vis7" class="chart-container"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= Zone 3 ================= -->
+    <section>
+        <div class="section-header">
+            <h2>Zone 3: Future Projections & Additional Metrics</h2>
+            <p>Reserved section for trend evolution and supplementary prediction models.</p>
+        </div>
+        <div class="zone-3">
+            <div class="card">
+                <div id="vis8" class="chart-container"></div>
+            </div>
+            <div class="card">
+                <div id="vis9" class="chart-container"></div>
+            </div>
+            <div class="card">
+                <div id="vis10" class="chart-container"></div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<!-- ====== Vega-Lite Rendering & Independent Control Blocks ====== -->
+<script>
+    // Standard chart configuration (with theme background)
+    const opt = { actions: false, theme: 'vox' };
+    
+    // Transparent background configuration specifically for the top layer chart 1.2
+    const optTransparent = { 
+        actions: false, 
+        theme: 'vox',
+        config: { background: "transparent" } // Force Vega internal background to transparent
+    };
+
+    // ----------------- Zone 1 Chart Rendering -----------------
+    const url1_1 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/1.1Mapping%20the%20Seller%20Landscape.vl.json";
+    vegaEmbed('#vis1_1', url1_1, opt).catch(console.error);
+
+    const url1_2 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/1.2Seller%20Density.vl.json";
+    // Note: optTransparent is used here
+    vegaEmbed('#vis1_2', url1_2, optTransparent).catch(console.error);
+
+    const url2 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/2The%20Five-Year%20Revenue%20Surge.vl.json";
+    vegaEmbed('#vis2', url2, opt).catch(console.error);
+
+    const url3 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/3Deconstructing%20the%20Digital%20Cart.vl.json";
+    vegaEmbed('#vis3', url3, opt).catch(console.error);
+
+    // ----------------- Zone 2 Chart Rendering -----------------
+    const url4 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/4The%20Shifting%20Tides%20of%20Traffic.vl.json";
+    vegaEmbed('#vis4', url4, opt).catch(console.error);
+
+    const url5 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/5Platform%20Loyalty%20by%20Generation.vl.json";
+    vegaEmbed('#vis5', url5, opt).catch(console.error);
+
+    const url6 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/6The%20Battlegrounds%20of%20Consumer%20Minds.vl.json";
+    vegaEmbed('#vis6', url6, opt).catch(console.error);
+
+    const url7 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/7The%20Platform%20Momentum%20Matrix.vl.json";
+    vegaEmbed('#vis7', url7, opt).catch(console.error);
+
+    // ----------------- Zone 3 Empty Placeholders -----------------
+    // Charts 8, 9, 10 have no configuration links yet, to be added later
+</script>
+
 </body>
 </html>

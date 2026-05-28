@@ -1,0 +1,79 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": "container",
+  "autosize": {"type": "fit", "contains": "padding"},
+  "title": {
+    "text": "Density of Digital Sellers Across Malaysia",
+    "subtitle": "Number of Sellers per 100k Residents",
+    "fontSize": 18,
+    "subtitleFontSize": 12,
+    "subtitleColor": "#7f8c8d",
+    "anchor": "start",
+    "offset": 15
+  },
+  "layer": [
+    {
+      "description": "Bottom layer",
+      "data": {
+        "url": "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/datasets/1.3southeastasia.topojson",
+        "format": {"type": "topojson", "feature": "countries"}
+      },
+      "projection": {"type": "mercator", "center": [109, 4.5], "scale": 1350},
+      "mark": {
+        "type": "geoshape",
+        "fill": "#e0e4e8",
+        "stroke": "#ffffff",
+        "strokeWidth": 1.2
+      }
+    },
+    {
+      "description": "Top layer",
+      "data": {
+        "url": "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/datasets/1.2malaysia.state.geojson",
+        "format": {"type": "json", "property": "features"}
+      },
+      "projection": {"type": "mercator", "center": [109, 4.5], "scale": 1350},
+      "transform": [
+        {
+          "lookup": "properties.name",
+          "from": {
+            "data": {
+              "url": "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/datasets/1.1.csv"
+            },
+            "key": "State",
+            "fields": ["Sellers_per_100k", "Population"]
+          }
+        }
+      ],
+      "mark": {"type": "geoshape", "stroke": "#ffffff", "strokeWidth": 0.7},
+      "encoding": {
+        "color": {
+          "field": "Sellers_per_100k",
+          "type": "quantitative",
+          "scale": {"scheme": "yellowOrangeRed", "type": "sqrt"},
+          "legend": {
+            "title": "Sellers per 100k Population",
+            "orient": "bottom-right",
+            "direction": "horizontal"
+          }
+        },
+        "tooltip": [
+          {"field": "properties.name", "type": "nominal", "title": "State"},
+          {
+            "field": "Population",
+            "type": "quantitative",
+            "title": "Population",
+            "format": ","
+          },
+          {
+            "field": "Sellers_per_100k",
+            "type": "quantitative",
+            "title": "Density (per 100k)"
+          }
+        ]
+      }
+    }
+  ],
+  "config": {"view": {"stroke": "transparent"}}
+}

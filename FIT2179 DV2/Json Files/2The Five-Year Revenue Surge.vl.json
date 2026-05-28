@@ -12,46 +12,88 @@
     "url": "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/datasets/2.csv",
     "format": {"type": "csv"}
   },
-  "mark": {
-    "type": "line",
-    "point": {
-      "filled": true,
-      "fill": "white",
-      "stroke": "#d35400",
-      "strokeWidth": 2,
-      "size": 60
-    },
-    "color": "#d35400",
-    "strokeWidth": 3
-  },
-  "encoding": {
-    "x": {
-      "field": "Date",
-      "type": "temporal",
-      "axis": {
-        "title": "Timeline (Quarterly)",
-        "format": "%Y Q%q",
-        "labelAngle": -45,
-        "tickCount": 20,
-        "grid": false
+  "layer": [
+    {
+      "mark": {
+        "type": "line",
+        "point": {
+          "filled": true,
+          "fill": "white",
+          "stroke": "#d35400",
+          "strokeWidth": 2,
+          "size": 60
+        },
+        "color": "#d35400",
+        "strokeWidth": 3
+      },
+      "encoding": {
+        "x": {
+          "field": "Date",
+          "type": "temporal",
+          "axis": {
+            "title": "Timeline (Quarterly)",
+            "format": "%Y Q%q",
+            "labelAngle": -45,
+            "tickCount": 20,
+            "grid": false
+          }
+        },
+        "y": {
+          "field": "Income_RM_Million",
+          "type": "quantitative",
+          "axis": {
+            "title": "Income (RM Million)",
+            "grid": true,
+            "gridColor": "#ecf0f1"
+          },
+          "scale": {"zero": false}
+        },
+        "tooltip": [
+          {
+            "field": "Date",
+            "type": "temporal",
+            "format": "%B %Y",
+            "title": "Quarter"
+          },
+          {
+            "field": "Income_RM_Million",
+            "type": "quantitative",
+            "format": ",.0f",
+            "title": "Revenue (RM Mil)"
+          }
+        ]
       }
     },
-    "y": {
-      "field": "Income_RM_Million",
-      "type": "quantitative",
-      "scale": {"zero": false},
-      "axis": {
-        "title": "Income (RM Million)",
-        "gridColor": "#ecf0f1"
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "fontSize": 11,
+        "fontStyle": "italic",
+        "color": "#7f8c8d"
+      },
+      "encoding": {
+        "x": {"datum": "2023-06-30", "type": "temporal"},
+        "y": {"datum": 195000, "type": "quantitative"},
+        "text": {"value": "Pandemic: E-commerce Boom Begins"}
       }
     },
-    "tooltip": [
-      {"field": "Year", "type": "ordinal"},
-      {"field": "Quarter", "type": "nominal"},
-      {"field": "Income_RM_Million", "type": "quantitative", "title": "Income (RM Mil)", "format": ",.0f"}
-    ]
-  },
-  "config": {
-    "view": {"stroke": "transparent"}
-  }
+    {
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "dx": 0,
+        "dy": -20,
+        "fontSize": 12,
+        "fontWeight": "bold",
+        "color": "#e67e22"
+      },
+      "encoding": {
+        "x": {"datum": "2024-09-30", "type": "temporal"},
+        "y": {"datum": 300000, "type": "quantitative"},
+        "text": {"value": "All-Time High Revenue"}
+      }
+    }
+  ],
+  "config": {}
 }

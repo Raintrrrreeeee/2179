@@ -19,7 +19,7 @@
         "url": "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/datasets/1.3southeastasia.topojson",
         "format": {"type": "topojson", "feature": "countries"}
       },
-      "projection": {"type": "mercator", "center": [109, 4.5], "scale": 1350},
+      "projection": {"type": "mercator", "center": [109, 4.5], "scale": 1550},
       "mark": {
         "type": "geoshape",
         "fill": "#e0e4e8",

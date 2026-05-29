@@ -1,7 +1,11 @@
-Pain_Point,Percentage
-High Shipping Costs,68
-Delivery Delays,55
-Product Quality Issues,42
-Difficult Return Process,38
-Poor Customer Service,25
-Payment Security Concerns,18
+Pain_Point,Sector,Percentage
+Cannot touch products,E-Commerce,72
+Cannot touch products,Physical Retail,12
+Wait times (Shipping),E-Commerce,65
+Wait times (Shipping),Physical Retail,35
+Complex returns,E-Commerce,58
+Complex returns,Physical Retail,18
+Limited variety,E-Commerce,15
+Limited variety,Physical Retail,68
+Lack of assistance,E-Commerce,42
+Lack of assistance,Physical Retail,25

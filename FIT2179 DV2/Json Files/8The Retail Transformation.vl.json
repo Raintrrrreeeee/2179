@@ -1,0 +1,117 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": 280,
+  "autosize": {"type": "fit", "contains": "padding"},
+  "title": {
+    "text": "The Retail Transformation (2020-2024)",
+    "subtitle": "The Widening Revenue Gap: E-Commerce vs. Physical Retail",
+    "fontSize": 18,
+    "subtitleFontSize": 12,
+    "subtitleColor": "#7f8c8d",
+    "anchor": "start",
+    "offset": 15
+  },
+  "data": {
+    "url": "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/datasets/8.csv",
+    "format": {"type": "csv"}
+  },
+  "layer": [
+    {
+      "description": "核心黑科技：提取两者差值并填充阴影",
+      "transform": [
+        {"pivot": "Sector", "value": "Revenue_RM_Billion", "groupby": ["Date"]}
+      ],
+      "mark": {"type": "area", "color": "#f1c40f", "opacity": 0.25},
+      "encoding": {
+        "x": {"field": "Date", "type": "temporal"},
+        "y": {"field": "Brick-and-Mortar", "type": "quantitative"},
+        "y2": {"field": "E-Commerce"}
+      }
+    },
+    {
+      "description": "折线与数据点主体",
+      "transform": [
+        {
+          "calculate": "datum.Sector == 'Brick-and-Mortar' ? 'Physical Retail' : datum.Sector",
+          "as": "Display_Sector"
+        }
+      ],
+      "mark": {
+        "type": "line",
+        "strokeWidth": 3.5,
+        "point": {"filled": true, "fill": "white", "size": 45, "strokeWidth": 2}
+      },
+      "encoding": {
+        "x": {
+          "field": "Date",
+          "type": "temporal",
+          "axis": {
+            "title": "Timeline (Quarterly)",
+            "format": "%Y Q%q",
+            "labelAngle": -45,
+            "tickCount": 15,
+            "grid": false
+          }
+        },
+        "y": {
+          "field": "Revenue_RM_Billion",
+          "type": "quantitative",
+          "axis": {
+            "title": "Revenue (RM Billion)",
+            "grid": true,
+            "gridColor": "#ecf0f1",
+            "tickCount": 6
+          },
+          "scale": {"zero": false}
+        },
+        "color": {
+          "field": "Display_Sector",
+          "type": "nominal",
+          "scale": {
+            "domain": ["E-Commerce", "Physical Retail"],
+            "range": ["#e67e22", "#34495e"]
+          },
+          "legend": {
+            "title": "Retail Sector",
+            "orient": "bottom-right",
+            "direction": "horizontal",
+            "titleFontSize": 11,
+            "labelFontSize": 11
+          }
+        },
+        "tooltip": [
+          {
+            "field": "Date",
+            "type": "temporal",
+            "format": "%B %Y",
+            "title": "Quarter"
+          },
+          {"field": "Display_Sector", "type": "nominal", "title": "Sector"},
+          {
+            "field": "Revenue_RM_Billion",
+            "type": "quantitative",
+            "format": ",.1f",
+            "title": "Revenue (RM Bil)"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "fontSize": 12,
+        "fontStyle": "italic",
+        "fontWeight": "bold",
+        "color": "#d35400"
+      },
+      "encoding": {
+        "x": {"datum": "2022-06-30", "type": "temporal"},
+        "y": {"datum": 225, "type": "quantitative"},
+        "text": {"value": "Widening Revenue Gap"}
+      }
+    }
+  ],
+  "config": {"view": {"stroke": "transparent"}}
+}

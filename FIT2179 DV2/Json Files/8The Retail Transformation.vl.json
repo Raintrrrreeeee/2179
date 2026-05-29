@@ -18,7 +18,6 @@
   },
   "layer": [
     {
-      "description": "核心黑科技：提取两者差值并填充阴影",
       "transform": [
         {"pivot": "Sector", "value": "Revenue_RM_Billion", "groupby": ["Date"]}
       ],
@@ -30,7 +29,6 @@
       }
     },
     {
-      "description": "折线与数据点主体",
       "transform": [
         {
           "calculate": "datum.Sector == 'Brick-and-Mortar' ? 'Physical Retail' : datum.Sector",

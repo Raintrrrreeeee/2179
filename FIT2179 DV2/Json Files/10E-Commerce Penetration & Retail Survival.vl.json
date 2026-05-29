@@ -31,7 +31,6 @@
   },
   "layer": [
     {
-      "description": "底层：线上份额 (蓝色柱状图)",
       "mark": {"type": "bar", "cornerRadiusEnd": 4, "opacity": 0.75},
       "encoding": {
         "y": {
@@ -56,7 +55,6 @@
       }
     },
     {
-      "description": "顶层：线下客流恢复 (红色折线图)",
       "mark": {
         "type": "line",
         "strokeWidth": 3.5,

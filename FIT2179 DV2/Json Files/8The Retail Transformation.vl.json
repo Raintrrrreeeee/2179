@@ -68,7 +68,7 @@
           "type": "nominal",
           "scale": {
             "domain": ["E-Commerce", "Physical Retail"],
-            "range": ["#e67e22", "#34495e"]
+            "range": ["#5dade2", "#f1948a"]
           },
           "legend": {
             "title": "Retail Sector",

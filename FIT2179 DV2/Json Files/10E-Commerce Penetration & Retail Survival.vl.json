@@ -1,0 +1,98 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": 350,
+  "autosize": {"type": "fit", "contains": "padding"},
+  "title": {
+    "text": "E-Commerce Penetration & Retail Survival",
+    "subtitle": "Bar: Online Penetration (Left Axis) | Line: Physical Recovery (Right Axis)",
+    "fontSize": 18,
+    "subtitleFontSize": 12,
+    "subtitleColor": "#7f8c8d",
+    "anchor": "start",
+    "offset": 15
+  },
+  "data": {
+    "url": "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/datasets/10.csv",
+    "format": {"type": "csv"}
+  },
+  "encoding": {
+    "x": {
+      "field": "Sub_Sector",
+      "type": "nominal",
+      "sort": {"field": "Online_Share", "order": "descending"},
+      "axis": {
+        "title": null,
+        "labelAngle": -45,
+        "labelFontSize": 11,
+        "labelColor": "#5dade2"
+      }
+    }
+  },
+  "layer": [
+    {
+      "description": "底层：线上份额 (蓝色柱状图)",
+      "mark": {"type": "bar", "cornerRadiusEnd": 4, "opacity": 0.75},
+      "encoding": {
+        "y": {
+          "field": "Online_Share",
+          "type": "quantitative",
+          "axis": {
+            "title": "Online Sales Share (%)",
+            "titleColor": "#5dade2",
+            "labelColor": "#5dade2",
+            "grid": false
+          }
+        },
+        "color": {"value": "#5dade2"},
+        "tooltip": [
+          {"field": "Sub_Sector", "type": "nominal", "title": "Sector"},
+          {
+            "field": "Online_Share",
+            "type": "quantitative",
+            "title": "Online Share (%)"
+          }
+        ]
+      }
+    },
+    {
+      "description": "顶层：线下客流恢复 (红色折线图)",
+      "mark": {
+        "type": "line",
+        "strokeWidth": 3.5,
+        "point": {
+          "filled": true,
+          "fill": "white",
+          "size": 65,
+          "strokeWidth": 2.5
+        }
+      },
+      "encoding": {
+        "y": {
+          "field": "Footfall_Recovery",
+          "type": "quantitative",
+          "scale": {"domain": [20, 100]},
+          "axis": {
+            "title": "Physical Footfall Recovery (%)",
+            "titleColor": "#f1948a",
+            "labelColor": "#f1948a",
+            "grid": true,
+            "gridColor": "#ecf0f1",
+            "gridDash": [4, 4]
+          }
+        },
+        "color": {"value": "#f1948a"},
+        "tooltip": [
+          {"field": "Sub_Sector", "type": "nominal", "title": "Sector"},
+          {
+            "field": "Footfall_Recovery",
+            "type": "quantitative",
+            "title": "Physical Recovery (%)"
+          }
+        ]
+      }
+    }
+  ],
+  "resolve": {"scale": {"y": "independent"}},
+  "config": {"view": {"stroke": "transparent"}}
+}

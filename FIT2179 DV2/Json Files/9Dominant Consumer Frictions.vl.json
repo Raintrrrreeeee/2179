@@ -1,0 +1,104 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": 300,
+  "autosize": {"type": "fit", "contains": "padding"},
+  "title": {
+    "text": "Dominant Consumer Frictions",
+    "subtitle": "Tug-of-War: Showing the sector with the severest pain point",
+    "fontSize": 18,
+    "subtitleFontSize": 12,
+    "subtitleColor": "#7f8c8d",
+    "anchor": "start",
+    "offset": 15
+  },
+  "data": {
+    "url": "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/datasets/9.csv",
+    "format": {"type": "csv"}
+  },
+  "transform": [
+    {
+      "joinaggregate": [
+        {"op": "max", "field": "Percentage", "as": "Max_Percentage"}
+      ],
+      "groupby": ["Pain_Point"]
+    },
+    {"filter": "datum.Percentage == datum.Max_Percentage"},
+    {
+      "calculate": "datum.Sector == 'E-Commerce' ? -datum.Percentage : datum.Percentage",
+      "as": "Signed_Percentage"
+    }
+  ],
+  "layer": [
+    {
+      "mark": {"type": "bar", "cornerRadiusEnd": 4},
+      "encoding": {
+        "x": {
+          "field": "Signed_Percentage",
+          "type": "quantitative",
+          "scale": {"domain": [-80, 80]},
+          "axis": {
+            "title": "Severity of Pain Point (%)",
+            "values": [-80, -60, -40, -20, 0, 20, 40, 60, 80],
+            "labelExpr": "abs(datum.value)",
+            "grid": true,
+            "gridColor": "#ecf0f1",
+            "titleColor": "#576574",
+            "labelColor": "#576574"
+          }
+        },
+        "y": {"field": "Pain_Point", "type": "nominal", "axis": null},
+        "color": {
+          "field": "Sector",
+          "type": "nominal",
+          "scale": {
+            "domain": ["E-Commerce", "Physical Retail"],
+            "range": ["#5dade2", "#f1948a"]
+          },
+          "legend": {
+            "title": "Dominant Friction Area",
+            "orient": "bottom",
+            "direction": "horizontal",
+            "titleFontSize": 12,
+            "labelFontSize": 11
+          }
+        },
+        "tooltip": [
+          {"field": "Sector", "type": "nominal", "title": "Severest in"},
+          {"field": "Pain_Point", "type": "nominal", "title": "Friction"},
+          {
+            "field": "Percentage",
+            "type": "quantitative",
+            "title": "Severity (%)"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "baseline": "middle",
+        "fontSize": 12,
+        "fontWeight": "bold",
+        "color": "#576574"
+      },
+      "encoding": {
+        "x": {"datum": 0, "type": "quantitative"},
+        "y": {"field": "Pain_Point", "type": "nominal"},
+        "text": {"field": "Pain_Point", "type": "nominal"},
+        "align": {
+          "condition": {
+            "test": "datum.Sector == 'E-Commerce'",
+            "value": "left"
+          },
+          "value": "right"
+        },
+        "dx": {
+          "condition": {"test": "datum.Sector == 'E-Commerce'", "value": 8},
+          "value": -8
+        }
+      }
+    }
+  ],
+  "config": {"view": {"stroke": "transparent"}}
+}

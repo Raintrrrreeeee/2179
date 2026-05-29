@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swipe,Shop,Ship: The Momentum of Malaysia's E-Commerce</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+    <style>
+        /* --- Core Visual Variables --- */
+        :root {
+            --bg-color: #f3f6f9;         
+            --card-bg: #ffffff;          
+            --text-main: #2d3748;        
+            --text-sub: #718096;         
+            --accent-color: #3182ce;     
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* --- Base Reset & Layout --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { font-family: sans-serif !important; }
+        body { font-family: sans-serif; background-color: var(--bg-color); color: var(--text-main); padding: 30px; }
+        .dashboard { max-width: 1600px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px; }
+
+        /* Main Dashboard Title */
+        .main-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            text-align: center;
+            color: var(--text-main);
+            margin-bottom: 10px;
+        }
+
+        /* --- Section Header Visual Hierarchy --- */
+        .section-header { margin-bottom: 15px; padding-left: 12px; border-left: 5px solid var(--accent-color); }
+        .section-header h2 { font-size: 1.4rem; font-weight: 600; letter-spacing: 0.5px; }
+        .section-header p { font-size: 0.9rem; color: var(--text-sub); margin-top: 4px; }
+
+        /* --- General Card Styles --- */
+        .card { 
+            background: var(--card-bg); 
+            border-radius: 12px; 
+            padding: 20px; 
+            box-shadow: var(--shadow);
+            transition: box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .card:hover { box-shadow: var(--shadow-hover); }
+        
+        /* --- Base Chart Containers --- */
+        .chart-container { 
+            flex-grow: 1; 
+            border-radius: 8px; 
+            width: 100%; 
+            height: 100%; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Force Vega-Lite Canvas/SVG to responsive fill */
+        .chart-container canvas, .chart-container svg {
+            width: 100% !important;
+            height: auto !important;
+        }
+
+        #vis1 {
+            transform: scale(1.055);
+            transform-origin: center center;
+        }
+        /* ========================================================== */
+
+        /* --- Three Main Zones Grid Layout --- */
+        
+        /* Zone 1: (Left large combined card + right two small cards stacked vertically) */
+        .zone-1 { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+        .zone-1 .side-charts { display: flex; flex-direction: column; gap: 24px; }
+        .zone-1 .main-chart .chart-container { min-height: 500px; }
+        .zone-1 .side-charts .chart-container { min-height: 220px; }
+
+        /* Zone 2: (2x2 equal grid) */
+        .zone-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+        .zone-2 .chart-container { min-height: 350px; }
+
+        /* Zone 3: (3 columns equal grid) */
+        .zone-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .zone-3 .chart-container { min-height: 320px; }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1200px) {
+            .zone-1, .zone-2, .zone-3 { grid-template-columns: 1fr; }
+            .zone-1 .side-charts { flex-direction: row; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+
+    <h1 class="main-title">Swipe,Shop,Ship: The Momentum of Malaysia's E-Commerce</h1>
+        <p style="text-align: center; color: #7f8c8d; font-size: 16px; margin-top: -10px; margin-bottom: 30px; font-style: italic;">Unveiling how e-commerce permanently disrupted Malaysia's retail landscape.</p>
+
+    <section>
+        <div class="section-header">
+            <h2>ZONE I: THE BIG PICTURE</h2>
+            <p>Mapping platform dominance, seller distribution, and exponential revenue growth across Malaysia.</p>
+        </div>
+        <div class="zone-1">
+            <div class="card main-chart">
+                <div id="vis1" class="chart-container"></div>
+            </div>
+            
+            <div class="side-charts">
+                <div class="card">
+                    <div id="vis2" class="chart-container"></div>
+                </div>
+                <div class="card">
+                    <div id="vis3" class="chart-container"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-header">
+            <h2>ZONE II: CLASH OF TITANS</h2>
+            <p>Decoding demographic loyalty, digital engagement, and evolving consumer shopping habits.</p>
+        </div>
+        <div class="zone-2">
+            <div class="card">
+                <div id="vis4" class="chart-container"></div>
+            </div>
+            <div class="card">
+                <div id="vis5" class="chart-container"></div>
+            </div>
+            <div class="card">
+                <div id="vis6" class="chart-container"></div>
+            </div>
+            <div class="card">
+                <div id="vis7" class="chart-container"></div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-header">
+            <h2>ZONE III: REALITY & OFFLINE</h2>
+            <p>Analyzing the physical retail struggle, consumer frictions, and ultimate survival matrix.</p>
+        </div>
+        <div class="zone-3">
+            <div class="card">
+                <div id="vis8" class="chart-container"></div>
+            </div>
+            <div class="card">
+                <div id="vis9" class="chart-container"></div>
+            </div>
+            <div class="card">
+                <div id="vis10" class="chart-container"></div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<script>
+    // Standard chart configuration (with theme background)
+    const opt = { 
+        actions: false, 
+        theme: 'vox', 
+        config: { 
+            font: 'sans-serif', 
+            axis: { labelFont: 'sans-serif', titleFont: 'sans-serif' }, 
+            header: { labelFont: 'sans-serif', titleFont: 'sans-serif' }, 
+            legend: { labelFont: 'sans-serif', titleFont: 'sans-serif' }, 
+            title: { font: 'sans-serif', subtitleFont: 'sans-serif' } 
+        } 
+    };
+
+    // ----------------- Zone 1 Chart Rendering -----------------
+    const url1 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/1Mapping%20the%20Seller%20Landscape.vl.json";
+    vegaEmbed('#vis1', url1, opt).catch(console.error);
+
+    const url2 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/2The%20Five-Year%20Revenue%20Surge.vl.json";
+    vegaEmbed('#vis2', url2, opt).catch(console.error);
+
+    const url3 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/3Deconstructing%20the%20Digital%20Cart.vl.json";
+    vegaEmbed('#vis3', url3, opt).catch(console.error);
+
+    // ----------------- Zone 2 Chart Rendering -----------------
+    const url4 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/4The%20Shifting%20Tides%20of%20Traffic.vl.json";
+    vegaEmbed('#vis4', url4, opt).catch(console.error);
+
+    const url5 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/5Platform%20Loyalty%20by%20Generation.vl.json";
+    vegaEmbed('#vis5', url5, opt).catch(console.error);
+
+    const url6 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/6The%20Battlegrounds%20of%20Consumer%20Minds.vl.json";
+    vegaEmbed('#vis6', url6, opt).catch(console.error);
+
+    const url7 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/7The%20Platform%20Momentum%20Matrix.vl.json";
+    vegaEmbed('#vis7', url7, opt).catch(console.error);
+
+    const url8 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/8The%20Retail%20Transformation.vl.json";
+    vegaEmbed('#vis8', url8, opt).catch(console.error);
+
+    const url9 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/9Dominant%20Consumer%20Frictions.vl.json";
+    vegaEmbed('#vis9', url9, opt).catch(console.error);
+
+    const url10 = "https://raw.githubusercontent.com/Raintrrrreeeee/2179/refs/heads/DV2/FIT2179%20DV2/Json%20Files/10E-Commerce%20Penetration%20%26%20Retail%20Survival.vl.json";
+    vegaEmbed('#vis10', url10, opt).catch(console.error);
+</script>
+
+</body>
+</html>

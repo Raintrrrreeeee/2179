@@ -46,7 +46,7 @@
           }
         }
       ],
-      "mark": {"type": "geoshape", "stroke": "#ffffff", "strokeWidth": 0.7},
+      "mark": {"type": "geoshape", "stroke": "#ffffff", "strokeWidth": 0.35},
       "encoding": {
         "color": {
           "field": "Sellers_per_100k",
